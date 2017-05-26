@@ -1,5 +1,4 @@
-<h1><center>A Deconstruct Note of Machine Leaning with Tensorflow
-(draft)</center></h1>
+<h1><center>A Deconstruct Note of Machine Leaning with Tensorflow</center></h1>
 
  
 
