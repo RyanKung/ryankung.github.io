@@ -289,8 +289,3 @@ print(sess.run(accuracy, feed_dict={x: mnist.test.images, y_: mnist.test.labels}
 [3][4] MNIST For ML Beginners  https://www.tensorflow.org/get_started/mnist/beginners
 
 [7]Machine Learing MOOC, Andrew Ng. https://www.coursera.org/learn/machine-learning/exam/wjqip/introduction
-
-
-```python
-
-```
