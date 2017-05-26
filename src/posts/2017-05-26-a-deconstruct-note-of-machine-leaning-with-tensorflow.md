@@ -93,7 +93,7 @@ for i in range(1, 31):
 ```
 
 
-![png](output_12_0.png)
+![png](/images/output_12_0.png)
 
 
 All images are shuffled, and you can reshuffle them again by applying function `numpy.random.suffle` on vetaxs.
