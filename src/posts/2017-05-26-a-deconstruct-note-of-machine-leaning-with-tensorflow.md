@@ -13,12 +13,7 @@ This work provide a deconstruct inside vision of tensorflow MNIST DataSet and th
 
 
 
-
-
-
-
-
-
+## I MNIST
  
 
 As the *hello world* of Minchine Learning MNIST, we usually download it from Yann LeCun's website (http://yann.lecun.com/exdb/mnist/), and in Tensorflow, MNIST can be easily fetched by follow codes.
@@ -174,7 +169,7 @@ $x$ is a placeholder of input images which have 28*28 dimensionals.
 W = tf.Variable(tf.zeros([784, 10]))
 b = tf.Variable(tf.zeros([10]))
 ```
-Matrix $W$ and Vertax $b$ are setted to all `Zero`.
+Matrix $W$ and Vertax $b$ are sets to all `Zero`.
 
 Thus, We start to implement formule $f(x)=W^TX+B$ and applied with function $softmax$:
 
