@@ -1,4 +1,5 @@
-# <center>A Deconstruct Note of Machine Leaning with Tensorflow (draft)</center>
+<h1><center>A Deconstruct Note of Machine Leaning with Tensorflow
+(draft)</center></h1>
 
  
 
@@ -7,7 +8,7 @@
 
  
 
-## <center>Abstract</center>
+<h3><center>Abstract</center></h3>
 
 This work provide a deconstruct inside vision of tensorflow MNIST DataSet and the basic pricpile of Linear Distribution based Machine Learning.
 
