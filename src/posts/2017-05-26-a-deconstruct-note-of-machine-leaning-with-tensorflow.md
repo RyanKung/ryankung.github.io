@@ -1,4 +1,4 @@
-<h1><center>A Deconstruct Note of Machine Leaning with Tensorflow</center></h1>
+<h1><center>A Deconstruct Note of Machine Learning with Tensorflow</center></h1>
 
  
 
