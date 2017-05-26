@@ -66,10 +66,17 @@ Abstract
   <span class="co"># https://github.com/tensorflow/tensorflow/pull/10188</span></code></pre></div>
 <p>And it worth to notify that the <code>fake DataSet</code> is not actuall a <code>Empty DataSet</code>, the <code>fake_data</code> label parameters will cause <code>side-effect</code> of how <code>fn DataSet(fake_data=True).next_batch</code> works.</p>
 <p>The above <code>one_hot</code> label means, the labels will be present as `one-hot vertaxs</p>
-
-
-
-<p>Lets check about <span class="math inline"><em>D</em><em>a</em><em>t</em><em>a</em>(<em>i</em><em>m</em><em>a</em><em>g</em><em>e</em><sub><em>i</em></sub>)</span>, You can use <code>matplotlib</code> to display some of them.</p>
+<span class="math display">\[\begin{equation}
+label(2) := [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]\\ \\
+label(1) := [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+\end{equation}\]</span>
+<span class="math display">\[\begin{equation}
+minst_i = (Set(Data(image_i)), Set(label_i))
+\end{equation}\]</span>
+<span class="math display">\[\begin{equation}
+Data(image_i) = \sum_{r=0}^w\sum_{h=0}^h pixel(image_i, r, h)
+\end{equation}\]</span>
+<p>Lets check about <span class="math inline">\(Data(image_i)\)</span>, You can use <code>matplotlib</code> to display some of them.</p>
 <div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> matplotlib <span class="im">as</span> plt
 plt.imshow(np.reshape(mnist.train.images[<span class="dv">0</span>], (<span class="dv">28</span>, <span class="dv">28</span>)), cmap<span class="op">=</span><span class="st">&quot;gray&quot;</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">%</span>matplotlib inline
@@ -88,40 +95,93 @@ fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span 
 <p>All images are shuffled, and you can reshuffle them again by applying function <code>numpy.random.suffle</code> on vetaxs.</p>
 <h2 id="ii-machine-learning-with-mnist-via-softmax-regressions">II Machine Learning with MNIST via Softmax Regressions</h2>
 <h3 id="linear-regression">2.1 Linear Regression</h3>
-<p>Now we have the input image Vertax with 28x28 dimensionals, and needs a function which can map it into a 10 dimensionals Vertax as the one-hot Vertax label. All we needs is to create a Martix with shape (10, 28*28), and a bias. Bias is often used by Term <span class="math inline"><em>l</em><em>i</em><em>n</em><em>e</em><em>a</em><em>r</em> <em>r</em><em>e</em><em>g</em><em>r</em><em>e</em><em>s</em><em>s</em><em>i</em><em>o</em><em>n</em></span> to refer to a slightly more sophisticated model[5]. Thus the function formula can be descibe as:</p>
-
+<p>Now we have the input image Vertax with 28x28 dimensionals, and needs a function which can map it into a 10 dimensionals Vertax as the one-hot Vertax label. All we needs is to create a Martix with shape (10, 28*28), and a bias. Bias is often used by Term <span class="math inline">\(linear\ regression\)</span> to refer to a slightly more sophisticated model[5]. Thus the function formula can be descibe as:</p>
+<span class="math display">\[\begin{equation}
+\left[
+\begin{matrix}
+y_11\\
+y_12\\
+\vdots\\
+y_{10}
+\end{matrix}
+\right]=
+\left[
+\begin{matrix}
+W_{1,1}&amp;W_{1,2}&amp;W_{1,3}&amp;\cdots&amp;W_{1,784}\\
+W_{2,1}&amp;W_{2,2}&amp;W_{2,3}&amp;\cdots&amp;W_{1,784}\\
+\vdots&amp;\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+W_{10,1}&amp;W_{10,2}&amp;W_{10,3}&amp;\cdots&amp;W_{10,784}
+\end{matrix}
+\right] .
+\left[
+\begin{matrix}
+x_1\\
+x_2\\
+\vdots\\
+\vdots\\
+\vdots\\
+x_{783}\\
+x_{784}
+\end{matrix}
+\right] +
+\left[
+\begin{matrix}
+b_1\\
+b_2\\
+\vdots\\
+b_{10}
+\end{matrix}
+\right] 
+\end{equation}\]</span>
 <p>Or:</p>
-
+<span class="math display">\[\begin{equation}
+f(x) = \sum_{i=1}^{10} w_{i,j}x_j+b_i=W^TX+B
+\end{equation}\]</span>
 <h3 id="multionoulli-distribution">2.2 Multionoulli distribution</h3>
 <p><code>Softmax function</code> can be seen as a generalization of the <code>sigmoid function</code>[1], and ofen used to predict the probabilities associated with a <code>multionoulli distribution</code></p>
-
-<p><code>Multinoulli Distribution</code> also knowns as <code>categorical distribution</code>, which is a distribution over a single discrete variable with <span class="math inline"><em>k</em></span> deifferent states, where <span class="math inline"><em>k</em></span> is finite.[2] It’s parametrized by a vector <span class="math inline"><em>P</em> ∈ [0, 1]<sup><em>k</em> − 1</sup></span>, where <span class="math inline"><em>p</em><sub><em>i</em></sub></span> gives the probability of the <span class="math inline"><em>i</em></span>-th state. In this case, <span class="math inline"><em>s</em><em>o</em><em>f</em><em>t</em><em>m</em><em>a</em><em>x</em></span> will help us to build a <code>Multinoulli Distribution</code> with a <span class="math inline"><em>k</em> = 10</span> <code>categorys</code>.</p>
+<span class="math display">\[\begin{equation}
+softmax(x)_1 = \frac{exp(x_i)}{\sum_{j=1}^nexp(x_j)}
+\end{equation}\]</span>
+<p><code>Multinoulli Distribution</code> also knowns as <code>categorical distribution</code>, which is a distribution over a single discrete variable with <span class="math inline">\(k\)</span> deifferent states, where <span class="math inline">\(k\)</span> is finite.[2] It’s parametrized by a vector <span class="math inline">\(P \in [0, 1]^{k-1}\)</span>, where <span class="math inline">\(p_i\)</span> gives the probability of the <span class="math inline">\(i\)</span>-th state. In this case, <span class="math inline">\(softmax\)</span> will help us to build a <code>Multinoulli Distribution</code> with a <span class="math inline">\(k=10\)</span> <code>categorys</code>.</p>
 <h3 id="implementing-with-tensorflow">2.3 Implementing with tensorflow</h3>
 <p>Initialize Vertaxs and Matrixs First:</p>
 <div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">x <span class="op">=</span> tf.placeholder(tf.float32, [<span class="va">None</span>, <span class="dv">784</span>])</code></pre></div>
-<p><span class="math inline"><em>x</em></span> is a placeholder of input images which have 28*28 dimensionals.</p>
+<p><span class="math inline">\(x\)</span> is a placeholder of input images which have 28*28 dimensionals.</p>
 <div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">W <span class="op">=</span> tf.Variable(tf.zeros([<span class="dv">784</span>, <span class="dv">10</span>]))
 b <span class="op">=</span> tf.Variable(tf.zeros([<span class="dv">10</span>]))</code></pre></div>
-<p>Matrix <span class="math inline"><em>W</em></span> and Vertax <span class="math inline"><em>b</em></span> are setted to all <code>Zero</code>.</p>
-<p>Thus, We start to implement formule <span class="math inline"><em>f</em>(<em>x</em>)=<em>W</em><sup><em>T</em></sup><em>X</em> + <em>B</em></span> and applied with function <span class="math inline"><em>s</em><em>o</em><em>f</em><em>t</em><em>m</em><em>a</em><em>x</em></span>:</p>
+<p>Matrix <span class="math inline">\(W\)</span> and Vertax <span class="math inline">\(b\)</span> are setted to all <code>Zero</code>.</p>
+<p>Thus, We start to implement formule <span class="math inline">\(f(x)=W^TX+B\)</span> and applied with function <span class="math inline">\(softmax\)</span>:</p>
 <div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">logits <span class="op">=</span> tf.matmul(x, W) <span class="op">+</span> b
 y <span class="op">=</span> tf.nn.softmax(logits)</code></pre></div>
 <h3 id="training-with-maximum-likelihood-estimation">2.4 Training with Maximum Likelihood Estimation</h3>
-<p>Machine Leaning is that “<span class="math inline"><em>A</em></span> computer program is said to learn from experience <span class="math inline"><em>E</em></span> with respect to some class of tasks <span class="math inline"><em>T</em></span> and performance measure <span class="math inline"><em>P</em></span>, if its performance at tasks in <span class="math inline"><em>T</em></span>, as measured by <span class="math inline"><em>P</em></span>, improves with experience <span class="math inline"><em>E</em></span> .”by Mitchell(1997).</p>
-<p>So, fot training, we needs to find out a method for <span class="math inline"><em>P</em><em>e</em><em>r</em><em>f</em><em>o</em><em>r</em><em>m</em><em>a</em><em>n</em><em>c</em><em>e</em></span> measurement, which descript what is good or bad and iterate with <code>optimization</code> <span class="math inline"><em>T</em><em>a</em><em>s</em><em>k</em></span> and getter <span class="math inline"><em>E</em><em>x</em><em>p</em><em>e</em><em>r</em><em>i</em><em>e</em><em>n</em><em>c</em><em>e</em></span> via dataset. Optimization refers to the “task of either minimizing or maximizing some function <span class="math inline"><em>f</em>(<em>x</em>)</span> by altering <span class="math inline"><em>x</em></span>”.[4] We usually call the function we want to minimize or maximize as <span class="math inline"><em>c</em><em>o</em><em>s</em><em>t</em> <em>f</em><em>u</em><em>n</em><em>c</em><em>t</em><em>i</em><em>o</em><em>n</em></span>, <span class="math inline"><em>l</em><em>o</em><em>s</em><em>s</em> <em>f</em><em>u</em><em>n</em><em>c</em><em>t</em><em>i</em><em>o</em><em>n</em></span> or <span class="math inline"><em>e</em><em>r</em><em>r</em><em>o</em><em>r</em> <em>f</em><em>u</em><em>n</em><em>c</em><em>t</em><em>i</em><em>o</em><em>n</em></span>.</p>
-<p>The <code>Maximum likelihood principle</code> is the most common model for making a good estimater of training models. Consider we have training DataSet $={x_{(1)}, x_{(2)}, , x_{(n)}} $, and a distribute mode <span class="math inline"><em>p</em><sub><em>m</em><em>o</em><em>d</em><em>e</em><em>l</em></sub>(<em>x</em>; <em>θ</em>)</span> which is based on <span class="math inline"><em>θ</em></span>. The Maximum Likelihood Estimator is defined as:</p>
-
+<p>Machine Leaning is that “<span class="math inline">\(A\)</span> computer program is said to learn from experience <span class="math inline">\(E\)</span> with respect to some class of tasks <span class="math inline">\(T\)</span> and performance measure <span class="math inline">\(P\)</span>, if its performance at tasks in <span class="math inline">\(T\)</span>, as measured by <span class="math inline">\(P\)</span>, improves with experience <span class="math inline">\(E\)</span> .”by Mitchell(1997).</p>
+<p>So, fot training, we needs to find out a method for <span class="math inline">\(Performance\)</span> measurement, which descript what is good or bad and iterate with <code>optimization</code> <span class="math inline">\(Task\)</span> and getter <span class="math inline">\(Experience\)</span> via dataset. Optimization refers to the “task of either minimizing or maximizing some function <span class="math inline">\(f(x)\)</span> by altering <span class="math inline">\(x\)</span>”.[4] We usually call the function we want to minimize or maximize as <span class="math inline">\(cost\ function\)</span>, <span class="math inline">\(loss\ function\)</span> or <span class="math inline">\(error\ function\)</span>.</p>
+<p>The <code>Maximum likelihood principle</code> is the most common model for making a good estimater of training models. Consider we have training DataSet $={x_{(1)}, x_{(2)}, , x_{(n)}} $, and a distribute mode <span class="math inline">\(p_{model}(x;\theta)\)</span> which is based on <span class="math inline">\(\theta\)</span>. The Maximum Likelihood Estimator is defined as:</p>
+<span class="math display">\[\begin{equation}
+\theta_{ML} = argmax_{\theta} \ p_{model}(\mathbb{X};\theta)\\
+=\mathop{argmax}_{\theta}^{} \prod_{i=1}^m\ p_{model}(x^{(i)};\theta)
+\end{equation}\]</span>
 Where:
-
+<span class="math display">\[\begin{equation}
+\mathbb{X}={x_{(1)}, x_{(2)}, \cdots, x_{(n)}}
+\end{equation}\]</span>
 <p>And we can simply and equivalent trans the product function with sum function:</p>
-
-<p>Ony way to interpret maxium likelihood estimation is to view it as minimizing the dissimilarity between the empirical distribution <span class="math inline"><em>P</em><sub><em>d</em><em>a</em><em>t</em><em>a</em></sub></span> defined by the training set and the model distribution, weith the degreee of dissimilarity between the two measured by the <span class="math inline"><em>K</em><em>L</em></span> divergence.</p>
-
+<span class="math display">\[\begin{equation}
+\Leftrightarrow \mathop{argmax}_{\theta}^{} \sum_{i=1}^m\ \log p_{model}(x^{(i)};\theta)
+\end{equation}\]</span>
+<p>Ony way to interpret maxium likelihood estimation is to view it as minimizing the dissimilarity between the empirical distribution <span class="math inline">\(P_{data}\)</span> defined by the training set and the model distribution, weith the degreee of dissimilarity between the two measured by the <span class="math inline">\(KL\)</span> divergence.</p>
+<span class="math display">\[\begin{equation}
+D_{KL}(p_{data}||p_{model})-\mathbb{E}_{x~p_data}[log\ p_{model}(x)]
+\end{equation}\]</span>
 <p>Minimizing this KL divergence corresponds exactly to minimizing the <code>cross-entropy</code> between the distributions.[6]</p>
-To estimate a conditional probability <span class="math inline"><em>P</em>(<em>y</em>|<em>x</em>; /<em>t</em><em>h</em><em>e</em><em>t</em><em>a</em>)</span>, If <span class="math inline"><em>X</em></span> presents all out inputs and <span class="math inline"><em>Y</em></span> all out oversved targets, then the CML is:
-
+To estimate a conditional probability <span class="math inline">\(P(y|x;/theta)\)</span>, If <span class="math inline">\(X\)</span> presents all out inputs and <span class="math inline">\(Y\)</span> all out oversved targets, then the CML is:
+<span class="math display">\[\begin{equation}
+\theta_{ML} = \mathop{argmax}_{\theta}^{} \sum_{i=1}^m\ \log P(y^{(i)}|x^{(i)};\theta)
+\end{equation}\]</span>
 <p>or</p>
-
+<span class="math display">\[\begin{equation}
+H_{y'}(y) = -\sum_i y'logP(y_i))
+\end{equation}\]</span>
 <p>as the documents of tensorflow[4].</p>
 <h3 id="cross-entropy-traing-with-tensorflow">2.5 Cross-entropy traing with tensorflow</h3>
 <p>For cross entropy implementation with Tensorflow, it only needs two lins of code:</p>
