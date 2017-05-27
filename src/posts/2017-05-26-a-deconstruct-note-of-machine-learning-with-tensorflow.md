@@ -7,19 +7,18 @@
 
  
 
-<h3><center>Abstract</center></h3>
+<h4><center>Abstract</center></h4>
 
-This work provide a deconstruct inside vision of tensorflow MNIST DataSet and the basic pricpile of Linear Distribution based Machine Learning.
-
+This note provide a inside vision of how tensorflow works on Machine Learning processing. We first described how MNIST DataSet implements and it's data structure, Then we used a classic linear machine method to create a MNIST DataSet based handwritting number recognize application. 
 
 
 ## I MNIST
  
 
-As the *hello world* of Minchine Learning MNIST, we usually download it from Yann LeCun's website (http://yann.lecun.com/exdb/mnist/), and in Tensorflow, MNIST can be easily fetched by follow codes.
+MNIST DataSet, As the *hello world* of Minchine Learning, we usually download it from Yann LeCun's website (http://yann.lecun.com/exdb/mnist/), and in Tensorflow, MNIST can be easily fetched by follow codes.
 
 
-We can check the implementation of function `read_data_set` at [fn read_data_sets()](`https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/learn/python/learn/datasets/mnist.py#L211`), which accept several parameters.
+The implementations can be checked via function `read_data_set` at [fn read_data_sets()](`https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/learn/python/learn/datasets/mnist.py#L211`), which accept several parameters.
 
 ```python
 def read_data_sets(train_dir,
@@ -32,7 +31,7 @@ def read_data_sets(train_dir,
 
 ```
 
-For the case `fake_data == True`, it will return an Fake DataSet, *`DataSet([], [], fake_data=True, one_hot=one_hot, dtype=dtype, seed=seed)`*, otherwise, It will returns the MNIST dataset with a high dimension dataset `base.Datasets(train=train, validation=validation, test=test)`, which include training data:label, validation data:label, and test data:label.
+For the case `fake_data == True`, it returns a Fake DataSet, *`DataSet([], [], fake_data=True, one_hot=one_hot, dtype=dtype, seed=seed)`*, otherwise, It will returns the MNIST dataset with a high dimension dataset `base.Datasets(train=train, validation=validation, test=test)`, which include training data:label, validation data:label, and test data:label.
 
 ```python
 
@@ -48,7 +47,6 @@ For the case `fake_data == True`, it will return an Fake DataSet, *`DataSet([], 
 ```
 
 And it worth to notify that the `fake DataSet` is not actuall a `Empty DataSet`, the `fake_data` label parameters will cause `side-effect` of how `fn DataSet(fake_data=True).next_batch` works.
- 
 
 The above `one_hot` label means, the labels will be present as `one-hot vertaxs
 
