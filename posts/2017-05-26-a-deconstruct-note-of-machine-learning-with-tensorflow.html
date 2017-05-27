@@ -39,15 +39,15 @@ A Deconstruct Note of Machine Learning with Tensorflow
 <center>
 <strong>ryankung(at)ieee.org</strong>
 </center>
-<h3>
+<h4>
 <center>
 Abstract
 </center>
-</h3>
-<p>This work provide a deconstruct inside vision of tensorflow MNIST DataSet and the basic pricpile of Linear Distribution based Machine Learning.</p>
+</h4>
+<p>This note provide a inside vision of how tensorflow works on Machine Learning processing. We first described how MNIST DataSet implements and it’s data structure, Then we used a classic linear machine method to create a MNIST DataSet based handwritting number recognize application.</p>
 <h2 id="i-mnist">I MNIST</h2>
-<p>As the <em>hello world</em> of Minchine Learning MNIST, we usually download it from Yann LeCun’s website (http://yann.lecun.com/exdb/mnist/), and in Tensorflow, MNIST can be easily fetched by follow codes.</p>
-<p>We can check the implementation of function <code>read_data_set</code> at <a href="%60https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/learn/python/learn/datasets/mnist.py#L211%60">fn read_data_sets()</a>, which accept several parameters.</p>
+<p>MNIST DataSet, As the <em>hello world</em> of Minchine Learning, we usually download it from Yann LeCun’s website (http://yann.lecun.com/exdb/mnist/), and in Tensorflow, MNIST can be easily fetched by follow codes.</p>
+<p>The implementations can be checked via function <code>read_data_set</code> at <a href="%60https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/learn/python/learn/datasets/mnist.py#L211%60">fn read_data_sets()</a>, which accept several parameters.</p>
 <div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> read_data_sets(train_dir,
                    fake_data<span class="op">=</span><span class="va">False</span>,
                    one_hot<span class="op">=</span><span class="va">False</span>,
@@ -55,7 +55,7 @@ Abstract
                    reshape<span class="op">=</span><span class="va">True</span>,
                    validation_size<span class="op">=</span><span class="dv">5000</span>,
                    seed<span class="op">=</span><span class="va">None</span>) <span class="op">-&gt;</span> DataSet:</code></pre></div>
-<p>For the case <code>fake_data == True</code>, it will return an Fake DataSet, <em><code>DataSet([], [], fake_data=True, one_hot=one_hot, dtype=dtype, seed=seed)</code></em>, otherwise, It will returns the MNIST dataset with a high dimension dataset <code>base.Datasets(train=train, validation=validation, test=test)</code>, which include training data:label, validation data:label, and test data:label.</p>
+<p>For the case <code>fake_data == True</code>, it returns a Fake DataSet, <em><code>DataSet([], [], fake_data=True, one_hot=one_hot, dtype=dtype, seed=seed)</code></em>, otherwise, It will returns the MNIST dataset with a high dimension dataset <code>base.Datasets(train=train, validation=validation, test=test)</code>, which include training data:label, validation data:label, and test data:label.</p>
 <div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">
   options <span class="op">=</span> <span class="bu">dict</span>(dtype<span class="op">=</span>dtype, reshape<span class="op">=</span>reshape, seed<span class="op">=</span>seed)
   
