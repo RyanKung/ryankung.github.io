@@ -139,7 +139,7 @@ b_{10}
 f(x) = \sum_{i=1}^{10} w_{i,j}x_j+b_i=W^TX+B
 \end{equation}\]</span>
 <h3 id="multionoulli-distribution">2.2 Multionoulli distribution</h3>
-<p><code>Softmax function</code> can be seen as a generalization of the <code>sigmoid function</code>[1], and ofen used to predict the probabilities associated with a <code>multionoulli distribution</code></p>
+<p><code>Softmax function</code> can be seen as a generalization of the <code>sigmoid function</code>[1], which is also named as <code>logistic function</code>[8] and used to predict the probabilities associated with a <code>multionoulli distribution</code>.</p>
 <span class="math display">\[\begin{equation}
 softmax(x)_1 = \frac{exp(x_i)}{\sum_{j=1}^nexp(x_j)}
 \end{equation}\]</span>
@@ -175,7 +175,7 @@ Where:
 D_{KL}(p_{data}||p_{model})-\mathbb{E}_{x~p_data}[log\ p_{model}(x)]
 \end{equation}\]</span>
 <p>Minimizing this KL divergence corresponds exactly to minimizing the <code>cross-entropy</code> between the distributions.[6]</p>
-To estimate a conditional probability <span class="math inline">\(P(y|x;/theta)\)</span>, If <span class="math inline">\(X\)</span> presents all out inputs and <span class="math inline">\(Y\)</span> all out oversved targets, then the CML is:
+To estimate a conditional probability <span class="math inline">\(P(y|x;\theta)\)</span>, If <span class="math inline">\(X\)</span> presents all out inputs and <span class="math inline">\(Y\)</span> all out oversved targets, then the CML is:
 <span class="math display">\[\begin{equation}
 \theta_{ML} = \mathop{argmax}_{\theta}^{} \sum_{i=1}^m\ \log P(y^{(i)}|x^{(i)};\theta)
 \end{equation}\]</span>

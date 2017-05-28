@@ -146,7 +146,7 @@ f(x) = \sum_{i=1}^{10} w_{i,j}x_j+b_i=W^TX+B
 
 ### 2.2 Multionoulli distribution
 
-`Softmax function` can be seen as a generalization of the `sigmoid function`[1], and ofen used to predict the probabilities associated with a `multionoulli distribution`
+`Softmax function` can be seen as a generalization of the `sigmoid function`[1], which is also named as `logistic function`[8] and used to predict the probabilities associated with a `multionoulli distribution`.
 
 \begin{equation}
 softmax(x)_1 = \frac{exp(x_i)}{\sum_{j=1}^nexp(x_j)}
@@ -212,7 +212,7 @@ D_{KL}(p_{data}||p_{model})-\mathbb{E}_{x~p_data}[log\ p_{model}(x)]
 
 Minimizing this KL divergence corresponds exactly to minimizing the `cross-entropy` between the distributions.[6]
 
-To estimate a conditional probability $P(y|x;/theta)$, If $X$ presents all out inputs and $Y$ all out oversved targets, then the CML is:
+To estimate a conditional probability $P(y|x;\theta)$, If $X$ presents all out inputs and $Y$ all out oversved targets, then the CML is:
 \begin{equation}
 \theta_{ML} = \mathop{argmax}_{\theta}^{} \sum_{i=1}^m\ \log P(y^{(i)}|x^{(i)};\theta)
 \end{equation}
