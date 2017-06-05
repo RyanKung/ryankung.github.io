@@ -4,7 +4,7 @@
 <center><h4>Ryan J. Kung</h4></center>
 <center><h4>ryankung(at)ieee.org<h4></center>
 
-## <center>Abstract</center>
+<h3><center>Abstract</center></h3>
 
 This article is actually a summarize note of Andrew Ng's Machine learning course, from part Week 1 to week3. Mainly includes two parts, the Linear Regression and the Logistic Regression. It also provides mathematiclly describes for MSE and MLE, which may help us to understand the processing of Regression or Classification.
 
