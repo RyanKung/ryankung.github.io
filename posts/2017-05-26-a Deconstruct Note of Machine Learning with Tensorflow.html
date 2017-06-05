@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Ryan's Cave - 2017-05-26-a Deconstruct Note of Machine Learning with Tensorflow</title>
+        <script type="text/javascript" src="../js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML-full,Safe"></script>
+        <link rel="stylesheet" href="../css/default.css" />
+        <link rel="stylesheet" href="../css/github.css" />
+    </head>
+    <body>
+        <div id="header">
+            <div id="logo">
+                <a href="../">Ryan's Cave</a>
+            </div>
+            <div id="navigation">
+                <a href="../">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../contact.html">Contact</a>
+                <a href="../archive.html">Archive</a>
+            </div>
+        </div>
+
+        <div id="content">
+            <div class="info">
+    Posted on May 26, 2017
+    
+</div>
+
+<h1>
+<center>
+A Deconstruct Note of Machine Learning with Tensorflow
+</center>
+</h1>
+<center>
+<strong>Ryan J. Kung</strong>
+</center>
+<center>
+<strong>ryankung(at)ieee.org</strong>
+</center>
+<h4>
+<center>
+Abstract
+</center>
+</h4>
+<p>This note provide a inside vision of how tensorflow works on Machine Learning processing. We first described how MNIST DataSet implements and it’s data structure, Then we used a classic linear machine method to create a MNIST DataSet based handwritting number recognize application.</p>
+<h2 id="i-mnist">I MNIST</h2>
+<p>MNIST DataSet, As the <em>hello world</em> of Minchine Learning, we usually download it from Yann LeCun’s website (http://yann.lecun.com/exdb/mnist/), and in Tensorflow, MNIST can be easily fetched by follow codes.</p>
+<p>The implementations can be checked via function <code>read_data_set</code> at <a href="%60https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/learn/python/learn/datasets/mnist.py#L211%60">fn read_data_sets()</a>, which accept several parameters.</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="kw">def</span> read_data_sets(train_dir,
+                   fake_data<span class="op">=</span><span class="va">False</span>,
+                   one_hot<span class="op">=</span><span class="va">False</span>,
+                   dtype<span class="op">=</span>dtypes.float32,
+                   reshape<span class="op">=</span><span class="va">True</span>,
+                   validation_size<span class="op">=</span><span class="dv">5000</span>,
+                   seed<span class="op">=</span><span class="va">None</span>) <span class="op">-&gt;</span> DataSet:</code></pre></div>
+<p>For the case <code>fake_data == True</code>, it returns a Fake DataSet, <em><code>DataSet([], [], fake_data=True, one_hot=one_hot, dtype=dtype, seed=seed)</code></em>, otherwise, It will returns the MNIST dataset with a high dimension dataset <code>base.Datasets(train=train, validation=validation, test=test)</code>, which include training data:label, validation data:label, and test data:label.</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">
+  options <span class="op">=</span> <span class="bu">dict</span>(dtype<span class="op">=</span>dtype, reshape<span class="op">=</span>reshape, seed<span class="op">=</span>seed)
+  
+  train <span class="op">=</span> DataSet(train_images, train_labels, <span class="op">**</span>options)
+  validation <span class="op">=</span> DataSet(validation_images, validation_labels, <span class="op">**</span>options)
+  test <span class="op">=</span> DataSet(test_images, test_labels, <span class="op">**</span>options)
+
+  <span class="co"># The origin implementation is dirtier than this, there is a pull request</span>
+  <span class="co"># https://github.com/tensorflow/tensorflow/pull/10188</span></code></pre></div>
+<p>And it worth to notify that the <code>fake DataSet</code> is not actuall a <code>Empty DataSet</code>, the <code>fake_data</code> label parameters will cause <code>side-effect</code> of how <code>fn DataSet(fake_data=True).next_batch</code> works.</p>
+<p>The above <code>one_hot</code> label means, the labels will be present as `one-hot vertaxs</p>
+<span class="math display">\[\begin{equation}
+label(2) := [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]\\ \\
+label(1) := [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+\end{equation}\]</span>
+<span class="math display">\[\begin{equation}
+minst_i = (Set(Data(image_i)), Set(label_i))
+\end{equation}\]</span>
+<span class="math display">\[\begin{equation}
+Data(image_i) = \sum_{r=0}^w\sum_{h=0}^h pixel(image_i, r, h)
+\end{equation}\]</span>
+<p>Lets check about <span class="math inline">\(Data(image_i)\)</span>, You can use <code>matplotlib</code> to display some of them.</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> matplotlib <span class="im">as</span> plt
+plt.imshow(np.reshape(mnist.train.images[<span class="dv">0</span>], (<span class="dv">28</span>, <span class="dv">28</span>)), cmap<span class="op">=</span><span class="st">&quot;gray&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="op">%</span>matplotlib inline
+<span class="im">import</span> numpy <span class="im">as</span> np
+<span class="im">import</span> matplotlib
+
+fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">80</span>,<span class="dv">80</span>))
+<span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">31</span>):
+    img <span class="op">=</span> np.reshape(train_data.images[i<span class="op">-</span><span class="dv">1</span>], (<span class="dv">28</span>, <span class="dv">28</span>))
+    ax <span class="op">=</span> fig.add_subplot(<span class="dv">8</span>, <span class="dv">10</span>, i)
+    matplotlib.pyplot.imshow(img, cmap<span class="op">=</span><span class="st">&quot;gray&quot;</span>)</code></pre></div>
+<div class="figure">
+<img src="../images/output_12_0.png" alt="png" />
+<p class="caption">png</p>
+</div>
+<p>All images are shuffled, and you can reshuffle them again by applying function <code>numpy.random.suffle</code> on vetaxs.</p>
+<h2 id="ii-machine-learning-with-mnist-via-softmax-regressions">II Machine Learning with MNIST via Softmax Regressions</h2>
+<h3 id="linear-regression">2.1 Linear Regression</h3>
+<p>Now we have the input image Vertax with 28x28 dimensionals, and needs a function which can map it into a 10 dimensionals Vertax as the one-hot Vertax label. All we needs is to create a Martix with shape (10, 28*28), and a bias. Bias is often used by Term <span class="math inline">\(linear\ regression\)</span> to refer to a slightly more sophisticated model[5]. Thus the function formula can be descibe as:</p>
+<span class="math display">\[\begin{equation}
+\left[
+\begin{matrix}
+y_11\\
+y_12\\
+\vdots\\
+y_{10}
+\end{matrix}
+\right]=
+\left[
+\begin{matrix}
+W_{1,1}&amp;W_{1,2}&amp;W_{1,3}&amp;\cdots&amp;W_{1,784}\\
+W_{2,1}&amp;W_{2,2}&amp;W_{2,3}&amp;\cdots&amp;W_{1,784}\\
+\vdots&amp;\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+W_{10,1}&amp;W_{10,2}&amp;W_{10,3}&amp;\cdots&amp;W_{10,784}
+\end{matrix}
+\right] .
+\left[
+\begin{matrix}
+x_1\\
+x_2\\
+\vdots\\
+\vdots\\
+\vdots\\
+x_{783}\\
+x_{784}
+\end{matrix}
+\right] +
+\left[
+\begin{matrix}
+b_1\\
+b_2\\
+\vdots\\
+b_{10}
+\end{matrix}
+\right] 
+\end{equation}\]</span>
+<p>Or:</p>
+<span class="math display">\[\begin{equation}
+f(x) = \sum_{i=1}^{10} w_{i,j}x_j+b_i=W^TX+B
+\end{equation}\]</span>
+<h3 id="multionoulli-distribution">2.2 Multionoulli distribution</h3>
+<p><code>Softmax function</code> can be seen as a generalization of the <code>sigmoid function</code>[1], which is also named as <code>logistic function</code>[8] and used to predict the probabilities associated with a <code>multionoulli distribution</code>.</p>
+<span class="math display">\[\begin{equation}
+softmax(x)_1 = \frac{exp(x_i)}{\sum_{j=1}^nexp(x_j)}
+\end{equation}\]</span>
+<p><code>Multinoulli Distribution</code> also knowns as <code>categorical distribution</code>, which is a distribution over a single discrete variable with <span class="math inline">\(k\)</span> deifferent states, where <span class="math inline">\(k\)</span> is finite.[2] It’s parametrized by a vector <span class="math inline">\(P \in [0, 1]^{k-1}\)</span>, where <span class="math inline">\(p_i\)</span> gives the probability of the <span class="math inline">\(i\)</span>-th state. In this case, <span class="math inline">\(softmax\)</span> will help us to build a <code>Multinoulli Distribution</code> with a <span class="math inline">\(k=10\)</span> <code>categorys</code>.</p>
+<h3 id="implementing-with-tensorflow">2.3 Implementing with tensorflow</h3>
+<p>Initialize Vertaxs and Matrixs First:</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">x <span class="op">=</span> tf.placeholder(tf.float32, [<span class="va">None</span>, <span class="dv">784</span>])</code></pre></div>
+<p><span class="math inline">\(x\)</span> is a placeholder of input images which have 28*28 dimensionals.</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">W <span class="op">=</span> tf.Variable(tf.zeros([<span class="dv">784</span>, <span class="dv">10</span>]))
+b <span class="op">=</span> tf.Variable(tf.zeros([<span class="dv">10</span>]))</code></pre></div>
+<p>Matrix <span class="math inline">\(W\)</span> and Vertax <span class="math inline">\(b\)</span> are sets to all <code>Zero</code>.</p>
+<p>Thus, We start to implement formule <span class="math inline">\(f(x)=W^TX+B\)</span> and applied with function <span class="math inline">\(softmax\)</span>:</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">logits <span class="op">=</span> tf.matmul(x, W) <span class="op">+</span> b
+y <span class="op">=</span> tf.nn.softmax(logits)</code></pre></div>
+<h3 id="training-with-maximum-likelihood-estimation">2.4 Training with Maximum Likelihood Estimation</h3>
+<p>Machine Leaning is that “<span class="math inline">\(A\)</span> computer program is said to learn from experience <span class="math inline">\(E\)</span> with respect to some class of tasks <span class="math inline">\(T\)</span> and performance measure <span class="math inline">\(P\)</span>, if its performance at tasks in <span class="math inline">\(T\)</span>, as measured by <span class="math inline">\(P\)</span>, improves with experience <span class="math inline">\(E\)</span> .”by Mitchell(1997).</p>
+<p>So, fot training, we needs to find out a method for <span class="math inline">\(Performance\)</span> measurement, which descript what is good or bad and iterate with <code>optimization</code> <span class="math inline">\(Task\)</span> and getter <span class="math inline">\(Experience\)</span> via dataset. Optimization refers to the “task of either minimizing or maximizing some function <span class="math inline">\(f(x)\)</span> by altering <span class="math inline">\(x\)</span>”.[4] We usually call the function we want to minimize or maximize as <span class="math inline">\(cost\ function\)</span>, <span class="math inline">\(loss\ function\)</span> or <span class="math inline">\(error\ function\)</span>.</p>
+<p>The <code>Maximum likelihood principle</code> is the most common model for making a good estimater of training models. Consider we have training DataSet $={x_{(1)}, x_{(2)}, , x_{(n)}} $, and a distribute mode <span class="math inline">\(p_{model}(x;\theta)\)</span> which is based on <span class="math inline">\(\theta\)</span>. The Maximum Likelihood Estimator is defined as:</p>
+<span class="math display">\[\begin{equation}
+\theta_{ML} = argmax_{\theta} \ p_{model}(\mathbb{X};\theta)\\
+=\mathop{argmax}_{\theta}^{} \prod_{i=1}^m\ p_{model}(x^{(i)};\theta)
+\end{equation}\]</span>
+Where:
+<span class="math display">\[\begin{equation}
+\mathbb{X}={x_{(1)}, x_{(2)}, \cdots, x_{(n)}}
+\end{equation}\]</span>
+<p>And we can simply and equivalent trans the product function with sum function:</p>
+<span class="math display">\[\begin{equation}
+\Leftrightarrow \mathop{argmax}_{\theta}^{} \sum_{i=1}^m\ \log p_{model}(x^{(i)};\theta)
+\end{equation}\]</span>
+<p>Ony way to interpret maxium likelihood estimation is to view it as minimizing the dissimilarity between the empirical distribution <span class="math inline">\(P_{data}\)</span> defined by the training set and the model distribution, weith the degreee of dissimilarity between the two measured by the <span class="math inline">\(KL\)</span> divergence.</p>
+<span class="math display">\[\begin{equation}
+D_{KL}(p_{data}||p_{model})-\mathbb{E}_{x~p_data}[log\ p_{model}(x)]
+\end{equation}\]</span>
+<p>Minimizing this KL divergence corresponds exactly to minimizing the <code>cross-entropy</code> between the distributions.[6]</p>
+To estimate a conditional probability <span class="math inline">\(P(y|x;\theta)\)</span>, If <span class="math inline">\(X\)</span> presents all out inputs and <span class="math inline">\(Y\)</span> all out oversved targets, then the CML is:
+<span class="math display">\[\begin{equation}
+\theta_{ML} = \mathop{argmax}_{\theta}^{} \sum_{i=1}^m\ \log P(y^{(i)}|x^{(i)};\theta)
+\end{equation}\]</span>
+<p>or</p>
+<span class="math display">\[\begin{equation}
+H_{y'}(y) = -\sum_i y'logP(y_i))
+\end{equation}\]</span>
+<p>as the documents of tensorflow[4].</p>
+<h3 id="cross-entropy-traing-with-tensorflow">2.5 Cross-entropy traing with tensorflow</h3>
+<p>For cross entropy implementation with Tensorflow, it only needs two lins of code:</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">y_ <span class="op">=</span> tf.placeholder(tf.float32, [<span class="va">None</span>, <span class="dv">10</span>])
+cross_entropy <span class="op">=</span> tf.reduce_sum(tf.nn.softmax_cross_entropy_with_logits(logits<span class="op">=</span>logits, labels<span class="op">=</span>y_))</code></pre></div>
+<p>Then we choosed Grandient Descent Optimizer[7] for minimize cross_entropy:</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">train_step <span class="op">=</span> tf.train.GradientDescentOptimizer(<span class="fl">0.5</span>).minimize(cross_entropy)</code></pre></div>
+<h3 id="go-train">2.6 Go Train</h3>
+<p>Before training start, you may needs to check your hardware resource by code</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">from</span> tensorflow.python.client <span class="im">import</span> device_lib
+device_lib.list_local_devices()</code></pre></div>
+<p>First launch the model session with GPU.</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">gpu_options <span class="op">=</span> tf.GPUOptions(per_process_gpu_memory_fraction<span class="op">=</span><span class="fl">0.9</span>)
+config<span class="op">=</span>tf.ConfigProto(gpu_options<span class="op">=</span>gpu_options, log_device_placement<span class="op">=</span><span class="va">True</span>)
+session <span class="op">=</span> tf.InteractiveSession(config<span class="op">=</span>config)</code></pre></div>
+<p>Then we’ll run the training step 1000 times.</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">config<span class="op">=</span>tf.ConfigProto(gpu_options<span class="op">=</span>gpu_options, log_device_placement<span class="op">=</span><span class="va">True</span>)
+sess <span class="op">=</span> tf.InteractiveSession(config<span class="op">=</span>config)
+tf.global_variables_initializer().run()
+
+<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):
+    batch_xs, batch_ys <span class="op">=</span> mnist.train.next_batch(<span class="dv">100</span>)
+    sess.run(train_step, feed_dict<span class="op">=</span>{x: batch_xs, y_: batch_ys})</code></pre></div>
+<p>And Evaluating via below codes:</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">correct_prediction <span class="op">=</span> tf.equal(tf.argmax(y,<span class="dv">1</span>), tf.argmax(y_,<span class="dv">1</span>))
+accuracy <span class="op">=</span> tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+<span class="bu">print</span>(sess.run(accuracy, feed_dict<span class="op">=</span>{x: mnist.test.images, y_: mnist.test.labels}))</code></pre></div>
+<h2 id="reference">Reference</h2>
+<p>[1][2][4][5][6] Book Deep Learning, Author Ian Gooodfellow and Yoshua Bengio and Aaron Courville, MIT Press, page 198</p>
+<p>[3][4] MNIST For ML Beginners https://www.tensorflow.org/get_started/mnist/beginners</p>
+<p>[7]Machine Learing MOOC, Andrew Ng. https://www.coursera.org/learn/machine-learning/exam/wjqip/introduction</p>
+
+        </div>
+
+        <div id="footer">
+            Site proudly generated by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        </div>
+    </body>
+</html>
