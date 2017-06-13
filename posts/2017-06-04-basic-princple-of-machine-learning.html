@@ -48,7 +48,6 @@ ryankung(at)ieee.org
 Abstract
 </center>
 </h3>
-<p>This article is actually a summarize note of Andrew Ng’s Machine learning course, from part Week 1 to week3. Mainly includes two parts, the Linear Regression and the Logistic Regression. It also provides mathematiclly describes for MSE and MLE, which may help us to understand the processing of Regression or Classification.</p>
 <h2 id="i-introduction">I Introduction</h2>
 <h3 id="what-is-machine-learning1">1.1 What is Machine Learning[1]</h3>
 <p>Two definitions of Machine Learning are offered:</p>
@@ -76,6 +75,7 @@ Abstract
 <ul>
 <li><strong>Goal</strong>: Given a Training Set, to Learn a Function <span class="math inline">\(h: X \rightarrow Y\)</span>, So that <span class="math inline">\(h(x)\)</span> is a <span class="math inline">\(good\)</span> predictor for the corresponding value <span class="math inline">\(y\)</span>.</li>
 </ul>
+<p>Note that the <span class="math inline">\(hypothesis\ function\)</span> is denoted as <span class="math inline">\(\phi(x)\)</span> in the Deep Learning book.</p>
 <h4 id="cost-function4">Cost Function[4]</h4>
 <ul>
 <li><p>Measure the <span class="math inline">\(Hypothesis\ Function\)</span>. Denoted as <span class="math inline">\(J(\theta)\)</span>.</p></li>
@@ -227,7 +227,7 @@ h_{\theta}(x) \in [0, 1]
 <span class="math display">\[\begin{align*}
 h_{\theta}(x)=g(\theta^Tx)
 \end{align*}\]</span>
-<p>With <em>sigmoid function</em> (or <em>logistic function</em>):</p>
+<p>With <em>sigmoid function</em> (or <em>logistic function</em>, also <em>activation function</em> in <em>neural netowrk</em> case):</p>
 <span class="math display">\[\begin{align*}
 g(z)=\frac{1}{1+e^{-z}}\\
 h_{\theta}(x)=\frac{1}{1+e^{-\theta^Tx}}
@@ -324,6 +324,40 @@ J(\theta) = - \frac{1}{m} \sum_{i=1}^m \large[ y^{(i)}\ \log (h_\theta (x^{(i)})
 \end{align*}\]</span>
 <h4 id="gradient-descent-1">Gradient Descent</h4>
 <span class="math display">\[\begin{align*} &amp; \text{Repeat}\ \lbrace \newline &amp; \ \ \ \ \theta_0 := \theta_0 - \alpha\ \frac{1}{m}\ \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})x_0^{(i)} \newline &amp; \ \ \ \ \theta_j := \theta_j - \alpha\ \left[ \left( \frac{1}{m}\ \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)} \right) + \frac{\lambda}{m}\theta_j \right] &amp;\ \ \ \ \ \ \ \ \ \ j \in \lbrace 1,2...n\rbrace\newline &amp; \rbrace\\ \end{align*}\]</span>
+<h2 id="iv-neural-network">IV Neural Network</h2>
+<ul>
+<li>Denotes:</li>
+</ul>
+<p><span class="math inline">\(a_i^{(j)}\)</span>= “<em>activation</em>” of unit <span class="math inline">\(i\)</span> in layer <span class="math inline">\(j\)</span>.</p>
+<p><span class="math inline">\(\Theta^{(j)}\)</span> = matrix of weights controlling function mapping from layer <span class="math inline">\(j\)</span> to layer <span class="math inline">\(j+1\)</span>.</p>
+<p>If network has <span class="math inline">\(s_j\)</span> units in layer <span class="math inline">\(j\)</span>, <span class="math inline">\(s_j+1\)</span> units in layer <span class="math inline">\(j+1\)</span>, then <span class="math inline">\(\Theta^{(j)}\)</span> will be of dimension <span class="math inline">\(s_{j+1} \times (s_j+1)\)</span></p>
+<p><span class="math inline">\(L\)</span> = total <span class="math inline">\(no.\)</span> of layer of neural network</p>
+<p><span class="math inline">\(S_l\)</span> = <span class="math inline">\(no.\)</span> of units (not counting bias unit) in layer <span class="math inline">\(l\)</span></p>
+<h3 id="cost-function-2">Cost Function</h3>
+<span class="math display">\[\begin{gather*} J(\Theta) = - \frac{1}{m} \sum_{i=1}^m \sum_{k=1}^K \left[y^{(i)}_k \log ((h_\Theta (x^{(i)}))_k) + (1 - y^{(i)}_k)\log (1 - (h_\Theta(x^{(i)}))_k)\right] + \frac{\lambda}{2m}\sum_{l=1}^{L-1} \sum_{i=1}^{s_l} \sum_{j=1}^{s_{l+1}} ( \Theta_{j,i}^{(l)})^2\end{gather*}\]</span>
+<p>Which is similar to Logistic Regression:</p>
+<span class="math display">\[\begin{gather*}
+J(\theta) = - \frac{1}{m} \sum_{i=1}^m [ y^{(i)}\ \log (h_\theta (x^{(i)})) + (1 - y^{(i)})\ \log (1 - h_\theta(x^{(i)}))] + \frac{\lambda}{2m}\sum_{j=1}^n \theta_j^2
+\end{gather*}\]</span>
+<p>Note:</p>
+<ul>
+<li>the double sum simply adds up the logistic regression costs calculated for each cell in the output layer</li>
+<li>the triple sum simply adds up the squares of all the individual <span class="math inline">\(\Theta\)</span>s in the entire network.</li>
+<li>the <span class="math inline">\(i\)</span> in the triple sum does not refer to training example <span class="math inline">\(i\)</span>.</li>
+</ul>
+<h3 id="gradient-computation">Gradient computation</h3>
+<span class="math display">\[\begin{gather*} J(\Theta) = - \frac{1}{m} \sum_{i=1}^m \sum_{k=1}^K \left[y^{(i)}_k \log ((h_\Theta (x^{(i)}))_k) + (1 - y^{(i)}_k)\log (1 - (h_\Theta(x^{(i)}))_k)\right] + \frac{\lambda}{2m}\sum_{l=1}^{L-1} \sum_{i=1}^{s_l} \sum_{j=1}^{s_{l+1}} ( \Theta_{j,i}^{(l)})^2\end{gather*}\]</span>
+<p><strong>Goal</strong>:</p>
+<span class="math display">\[\begin{gather*}
+\min_\Theta J(\Theta)
+\end{gather*}\]</span>
+<p><strong>Need code to compute</strong>:</p>
+<span class="math display">\[\begin{gather*}
+J(\Theta)\ {and}\ \dfrac{\partial}{\partial \Theta_{i,j}^{(l)}}J(\Theta)
+\end{gather*}\]</span>
+<h4 id="backpropagation-algorithm">Backpropagation algorithm:</h4>
+<p>Intuition: <span class="math inline">\(\delta^l_j\)</span> = “error” of node <span class="math inline">\(j\)</span> in layer <span class="math inline">\(l\)</span></p>
+<p>For each output unit(L=4): <span class="math inline">\(\delta_j^{(4)}=a_j^{(4)}-y_j\)</span></p>
 <ul>
 <li>[1] What is machine Learning https://www.coursera.org/learn/machine-learning/supplement/aAgxl/what-is-machine-learning</li>
 <li>[2] Supervised Learning https://www.coursera.org/learn/machine-learning/supplement/NKVJ0/supervised-learning</li>
@@ -333,6 +367,7 @@ J(\theta) = - \frac{1}{m} \sum_{i=1}^m \large[ y^{(i)}\ \log (h_\theta (x^{(i)})
 <li><p>[6] Regularized liner regression https://www.coursera.org/learn/machine-learning/lecture/QrMXd/regularized-linear-regression</p></li>
 <li><p>[7] Simplified Cost Function https://www.coursera.org/learn/machine-learning/supplement/0hpMl/simplified-cost-function-and-gradient-descent</p></li>
 </ul>
+<div class="sourceCode"><pre class="sourceCode octave"><code class="sourceCode octave"></code></pre></div>
 
         </div>
 
