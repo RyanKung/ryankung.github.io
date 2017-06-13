@@ -91,11 +91,8 @@ The use of pooling can ve viewed as adding an infinitely strong prior that the f
 
 Because pooling summarize the response over a whole neightborhood, it's possible to use fewer pooling units than the dectector units,  by reporting summary statistics for pooling regions spaced $k$ pixels apart rather than 1 pixel apart.
 
+## Reference
+
 [1][4][5][6][7] Book Deep Learning, Author Ian Gooodfellow and Yoshua Bengio and Aaron Courville, MIT Press, page 330
 
 [2][3] Convolution, wikipedia https://en.wikipedia.org/wiki/Convolution
-
-
-```python
-
-```
