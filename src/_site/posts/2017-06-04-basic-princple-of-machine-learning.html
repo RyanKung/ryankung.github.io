@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Ryan's Cave - 2017-06-04-basic-princple-of-machine-learning</title>
+        <script type="text/javascript" src="../js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML-full,Safe"></script>
+        <link rel="stylesheet" href="../css/default.css" />
+        <link rel="stylesheet" href="../css/github.css" />
+    </head>
+    <body>
+        <div id="header">
+            <div id="logo">
+                <a href="../">Ryan's Cave</a>
+            </div>
+            <div id="navigation">
+                <a href="../">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../contact.html">Contact</a>
+                <a href="../archive.html">Archive</a>
+            </div>
+        </div>
+
+        <div id="content">
+            <div class="info">
+    Posted on June  4, 2017
+    
+</div>
+
+<h1>
+<center>
+Basic Princple of Machine Learning, <br />Regressions and Classifications
+</center>
+</h1>
+<center>
+<h4>
+Ryan J. Kung
+</h4>
+</center>
+<center>
+<h4>
+ryankung(at)ieee.org
+<h4>
+</center>
+<h3>
+<center>
+Abstract
+</center>
+</h3>
+<h2 id="i-introduction">I Introduction</h2>
+<h3 id="what-is-machine-learning1">1.1 What is Machine Learning[1]</h3>
+<p>Two definitions of Machine Learning are offered:</p>
+<p><em>Arthur Samuel</em> described it as: “<strong>the field of study that gives computers the ability to learn without being explicitly programmed.</strong>” This is an older, informal definition.</p>
+<p><em>Tom Mitchell</em> provides a more modern definition: “<strong>A computer program is said to learn from experience E with respect to some class of tasks T and performance measure P, if its performance at tasks in T, as measured by P, improves with experience E.</strong>”</p>
+<h3 id="supervised-learning-and-unsupervised-learning">1.1.1 Supervised Learning and Unsupervised Learning</h3>
+<h4 id="supervised-learning2">Supervised Learning[2]</h4>
+<ul>
+<li><p>Regression</p></li>
+<li><p>Classification</p></li>
+</ul>
+<h4 id="unsupervised-learning3">Unsupervised Learning[3]</h4>
+<ul>
+<li><p>Clustering</p></li>
+<li><p>Non-clustering</p></li>
+</ul>
+<h3 id="model-and-cost-function">1.2 Model and Cost Function</h3>
+<h5 id="input-and-output">Input and Output</h5>
+<ul>
+<li><p><span class="math inline">\(x^{(i)}\)</span> denotes <span class="math inline">\(input\)</span> variable or feature, <span class="math inline">\(y^{(i)}\)</span> denotes <span class="math inline">\(output\)</span>.</p></li>
+<li><p><span class="math inline">\((x^{(i)}, y^{(i)})\ |\  i \in [1, m],\ i \in \mathbb{R}\)</span> is called <span class="math inline">\(Training\ Sample\)</span>.</p></li>
+<li><p><span class="math inline">\((X, Y)\)</span> is the <span class="math inline">\(space\)</span> of <span class="math inline">\((Input, Output)\)</span> valuses, which <span class="math inline">\(X=Y=\mathbb{R}\)</span></p></li>
+</ul>
+<h4 id="hypothesis-function">Hypothesis Function</h4>
+<ul>
+<li><strong>Goal</strong>: Given a Training Set, to Learn a Function <span class="math inline">\(h: X \rightarrow Y\)</span>, So that <span class="math inline">\(h(x)\)</span> is a <span class="math inline">\(good\)</span> predictor for the corresponding value <span class="math inline">\(y\)</span>.</li>
+</ul>
+<p>Note that the <span class="math inline">\(hypothesis\ function\)</span> is denoted as <span class="math inline">\(\phi(x)\)</span> in the Deep Learning book.</p>
+<h4 id="cost-function4">Cost Function[4]</h4>
+<ul>
+<li><p>Measure the <span class="math inline">\(Hypothesis\ Function\)</span>. Denoted as <span class="math inline">\(J(\theta)\)</span>.</p></li>
+<li><p><strong>Idea</strong>: Choose <span class="math inline">\(\theta\)</span> so that <span class="math inline">\(h_{\theta}\)</span> is close to <span class="math inline">\(y\)</span> for training samples <span class="math inline">\((X, Y)\)</span>.</p></li>
+</ul>
+<h5 id="cost-function-mse">Cost Function :: MSE</h5>
+<p>This function is otherwise called the “Squared error function”, or “Mean squared error”.</p>
+<span class="math display">\[\begin{equation}
+J(\theta_0, \theta_1) = \dfrac {1}{2m} \displaystyle \sum _{i=1}^m \left ( \hat{y}_{i}- y_{i} \right)^2 = \dfrac {1}{2m} \displaystyle \sum _{i=1}^m \left (h_\theta (x_{i}) - y_{i} \right)^2
+\end{equation}\]</span>
+<h3 id="gradient-descent">1.3 Gradient Descent</h3>
+<p>For minimizing the cost Function Z, We keep changing <span class="math inline">\(\theta\)</span> to reduce <span class="math inline">\(J(\theta)\)</span>.</p>
+repeat until convergance {
+<span class="math display">\[\begin{equation}
+\theta_i := \theta_i - \alpha \frac{\partial}{\partial \theta_j} J(\theta)
+\end{equation}\]</span>
+<p>}</p>
+<p>Where <span class="math inline">\(\alpha\)</span> is the learning rate. And <span class="math inline">\(\theta_{1..k}\)</span> should be update simultaneously.</p>
+<ul>
+<li><p>Convex Function means Bowl-shaped Function which dosen’t have any local optima except for the one global optimum.</p></li>
+<li><p>“Batch” Gradient Decent: Each step of gradient decent uses all the training examples.</p></li>
+</ul>
+<h2 id="ii-linear-regression-with-multiple-variables">II, Linear Regression with Multiple Variables</h2>
+<h3 id="multi-features">2.1 Multi Features</h3>
+<p>Denotes:</p>
+<ul>
+<li><p><span class="math inline">\(n\)</span>: <span class="math inline">\(\left| x^{(i)} \right|\)</span> Number of features</p></li>
+<li><p><span class="math inline">\(x^{(i)}\)</span>: Input (features) vactor of <span class="math inline">\(i^{th}\)</span> training example</p></li>
+<li><p><span class="math inline">\(x_j^{(i)}\)</span>: Value of feature <span class="math inline">\(j\)</span> in <span class="math inline">\(i^{th}\)</span> traning example.</p></li>
+</ul>
+<p>Hypothesis:</p>
+<p>We suppose that:</p>
+<span class="math display">\[\begin{align*}
+x_0^{(i)}=1\\
+\end{align*}\]</span>
+<p>So:</p>
+<span class="math display">\[\begin{align*}
+h_{\theta} &amp;= \theta_0 + \theta_1x_1 + \theta_2x_2 +...+\theta_kx_k\\
+&amp;=\theta_0x_0 + \theta_1x_1 + \theta_2x_2 +...+\theta_kx_k \\&amp;=\begin{bmatrix}\theta_0 \hspace{2em} \theta_1 \hspace{2em} ... \hspace{2em} \theta_n\end{bmatrix}\begin{bmatrix}x_0 \newline x_1 \newline \vdots \newline x_n\end{bmatrix}\\ &amp;= \Theta^T X
+\end{align*}\]</span>
+<h4 id="feature-scaling">Feature Scaling</h4>
+<ul>
+<li><p>Idea: Make sure features are on a similar scale. Thus to get every feature into <strong>approximately</strong> <span class="math inline">\(x_i \in [-1, 1]\)</span></p></li>
+<li><p>Mean Normalization:</p></li>
+</ul>
+<span class="math display">\[\begin{align*}
+x_i := \dfrac{x_i - \mu_i}{s_i}
+\end{align*}\]</span>
+<p>Where <span class="math inline">\(\mu_i\)</span> is the <strong>average</strong> of all values for feature(i), and <span class="math inline">\(s_i\)</span> is the range value of values <span class="math inline">\((max-min)\)</span>, or <span class="math inline">\(s_i\)</span> is the standard deviation.[5]</p>
+<h4 id="learning-rate">Learning Rate</h4>
+<p>Measure <span class="math inline">\(J(\theta, iteration)\)</span> to makeing sure gradient descent working correctly. <span class="math inline">\(J(\theta, iteratorn)\)</span> should be a <span class="math inline">\(convex\ function\)</span>.</p>
+<ul>
+<li>If <span class="math inline">\(\alpha\)</span> is too small: Slow convergence.</li>
+<li>if <span class="math inline">\(\alpha\)</span> is too large: <span class="math inline">\(J(\theta)\)</span> may not decrese on every iteration; may not converge.</li>
+</ul>
+<p>To choose <span class="math inline">\(\alpha\)</span> try:</p>
+<center>
+…, 0.001, 0.01, .., 0.1, 1, …
+</center>
+<h4 id="polynomial-regression">Polynomial Regression</h4>
+<p><strong>Polynomial Regression</strong></p>
+<p>Our hypothesis function need not be linear (a straight line) if that does not fit the data well.</p>
+<p>We can change <strong>the behavior or curve</strong> of our hypothesis function by making it a quadratic, cubic or square root function (or any other form).</p>
+<p><em>Linear Function -&gt; Quadratic Function -&gt; Cubic Function -&gt; …</em></p>
+<h3 id="computing-parameters-analytically">2.2 Computing Parameters Analytically</h3>
+<h4 id="normal-equation">Normal Equation</h4>
+<p><em>Normal Equation</em>: Method to solve for <span class="math inline">\(\theta\)</span> analytically.</p>
+<ul>
+<li>Intution: If 1D (<span class="math inline">\(\theta \in \mathbb{R}\)</span>)
+<span class="math display">\[\begin{align*}
+J(\theta)=\alpha \theta^2 + b\theta + c
+\end{align*}\]</span></li>
+</ul>
+To Set:
+<span class="math display">\[\begin{align*}
+\frac{\partial}{\partial \theta_j} J(\theta) = \frac{d}{d \theta_j} J(\theta) = 0
+\end{align*}\]</span>
+<p>Solve for <span class="math inline">\(\theta\)</span></p>
+<ul>
+<li>If nD (<span class="math inline">\(\theta \in \mathbb{R}^{n+1}\)</span>), A Vertex.</li>
+</ul>
+<span class="math display">\[\begin{align*}
+J(\Theta)=\frac{1}{2m} \sum_{i=1}^m (h_{\theta}(x^{(i)}-y^{(i)})^2
+\end{align*}\]</span>
+To Set:
+<span class="math display">\[\begin{align*}
+\frac{\partial}{\partial \theta_j} J(\theta) = 0
+\end{align*}\]</span>
+<p>(for every <span class="math inline">\(j\)</span>)</p>
+<p>Solve for <span class="math inline">\(\Theta\)</span></p>
+<ul>
+<li>Solution:
+<span class="math display">\[\begin{align*}
+\Theta =(X^TX)^{-1}X^TY
+\end{align*}\]</span></li>
+<li>Octave Code:</li>
+</ul>
+<center>
+<code>pinv(X'*X)*X'*Y</code>
+</center>
+<p>The following is a comparison of gradient descent and the normal equation:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Gradient Descent |Norma</th>
+<th align="right">Normal Equation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Need to choose <span class="math inline">\(\alpha\)</span> |No nee</td>
+<td align="right">No need to choose <span class="math inline">\(\alpha\)</span></td>
+</tr>
+<tr class="even">
+<td align="left">Needs many iterations |</td>
+<td align="right">No need to iterate</td>
+</tr>
+<tr class="odd">
+<td align="left"><span class="math inline">\(O (kn2)\)</span> |$O (</td>
+<td align="right"><span class="math inline">\(O (n3)\)</span>, need to calculate inverse of <span class="math inline">\(X^TX^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td align="left">Works well when <span class="math inline">\(n\)</span> is large |S</td>
+<td align="right">Slow if <span class="math inline">\(n\)</span> is very large</td>
+</tr>
+</tbody>
+</table>
+<h4 id="normal-equation-non-inveribility">Normal Equation Non-inveribility</h4>
+<p>If <span class="math inline">\(X^TX\)</span> is non-invertible.</p>
+<ul>
+<li>Redundant features(linearly dependent).</li>
+<li>Too many features (e.g. <span class="math inline">\(m\leq m\)</span>): Delete some feature, or use <strong>regularization</strong>.</li>
+</ul>
+<h2 id="iii-logistic-regression">III, Logistic Regression</h2>
+<h3 id="classification-and-representation">3.1 Classification and Representation</h3>
+<h4 id="classification">Classification</h4>
+<p><span class="math inline">\(y \in \{0, 1\}\)</span></p>
+<p><em>Threshold classifier output <span class="math inline">\(h_{\theta}(x)\)</span> at 0.5.</em></p>
+<p>if <span class="math inline">\(h_{\theta}(x) \geq 0.5\)</span>, predict “<span class="math inline">\(y=1\)</span>”</p>
+<p>if <span class="math inline">\(h_{\theta}(x) \leq 0.5\)</span>, predict “<span class="math inline">\(y=0\)</span>”</p>
+<p>Classification: <span class="math inline">\(y=0, 1\)</span></p>
+<p><span class="math inline">\(h(x)\)</span> can be &gt;1 or &lt;0</p>
+<h4 id="hypothesis-representation">Hypothesis Representation</h4>
+<p>Logistic Regression Model</p>
+<p>Want</p>
+<span class="math display">\[\begin{align*}
+h_{\theta}(x) \in [0, 1]
+\end{align*}\]</span>
+<span class="math display">\[\begin{align*}
+h_{\theta}(x)=g(\theta^Tx)
+\end{align*}\]</span>
+<p>With <em>sigmoid function</em> (or <em>logistic function</em>, also <em>activation function</em> in <em>neural netowrk</em> case):</p>
+<span class="math display">\[\begin{align*}
+g(z)=\frac{1}{1+e^{-z}}\\
+h_{\theta}(x)=\frac{1}{1+e^{-\theta^Tx}}
+\end{align*}\]</span>
+<ul>
+<li>Interpretation of Hypothesis Output</li>
+</ul>
+<span class="math display">\[\begin{align*}
+h_{\theta}(x)=P(y=1\ |\ x;\theta)
+\end{align*}\]</span>
+<h4 id="decision-boundary">Decision Boundary</h4>
+<ul>
+<li>Suppose</li>
+</ul>
+<p>predict “<span class="math inline">\(y=1\)</span>” if <span class="math inline">\(h_{\theta}\geq0.5\)</span></p>
+<p>predict “<span class="math inline">\(y=0\)</span>” if <span class="math inline">\(h_{\theta}\lt0.5\)</span></p>
+<ul>
+<li>Then</li>
+</ul>
+<p><span class="math inline">\(g(z)\geq0.5\)</span> when <span class="math inline">\(z\geq0\)</span></p>
+<p><span class="math inline">\(h_{\theta}(x)=g(\theta^Tx)\geq0.5\)</span> wherever <span class="math inline">\(\theta^Tx\geq 0\)</span></p>
+<ul>
+<li>So</li>
+</ul>
+<p>Predict <span class="math inline">\(y=1\)</span> if <span class="math inline">\(\theta^Tx\geq 0\)</span></p>
+<ul>
+<li>The line of <span class="math inline">\(\theta^Tx = 0\)</span> is called <strong>decision boundary</strong>.</li>
+</ul>
+<h4 id="cost-function">Cost Function</h4>
+<span class="math display">\[\begin{align*}
+J(\theta) = \sum_{i=1}^m Cost(h_{\theta}(x^{(i)}), y)
+\end{align*}\]</span>
+<p>If we use the linear regression cost function as cost functon of logistic regression, It would be none-convex function of <span class="math inline">\(\theta\)</span></p>
+<p>Logisitc regression cost function:</p>
+<span class="math display">\[\begin{align*}&amp; J(\theta) = \dfrac{1}{m} \sum_{i=1}^m \mathrm{Cost}(h_\theta(x^{(i)}),y^{(i)}) \newline &amp; \mathrm{Cost}(h_\theta(x),y) = -\log(h_\theta(x)) \; &amp; \text{if y = 1} \newline &amp; \mathrm{Cost}(h_\theta(x),y) = -\log(1-h_\theta(x)) \; &amp; \text{if y = 0}\end{align*}\]</span>
+<p>Which can be rewrite as:</p>
+<span class="math display">\[\begin{align*}
+J(\theta) = - \frac{1}{m} \displaystyle \sum_{i=1}^m [y^{(i)}\log (h_\theta (x^{(i)})) + (1 - y^{(i)})\log (1 - h_\theta(x^{(i)}))]
+\end{align*}\]</span>
+<p>This cost function can be derived from statistics using the principle of <strong>maximum likelihood estimation</strong>[7].</p>
+<h4 id="advanced-optimization">Advanced Optimization</h4>
+<p>“Conjugate gradient”, “BFGS”, and “L-BFGS” are more sophisticated, faster ways to optimize θ that can be used instead of gradient descent. We suggest that you should not write these more sophisticated algorithms yourself (unless you are an expert in numerical computing) but use the libraries instead, as they’re already tested and highly optimized. Octave provides them.</p>
+<h3 id="multiclass-classification">3.2 Multiclass Classification</h3>
+<ul>
+<li>One-Vs-All (one-vs-rest) Classification</li>
+</ul>
+<p>To train datasets with binary logisic classification as the binary tree</p>
+<span class="math display">\[\begin{align*}&amp; y \in \lbrace0, 1 ... n\rbrace \newline&amp; h_\theta^{(0)}(x) = P(y = 0 | x ; \theta) \newline&amp; h_\theta^{(1)}(x) = P(y = 1 | x ; \theta) \newline&amp; \cdots \newline&amp; h_\theta^{(n)}(x) = P(y = n | x ; \theta) \newline&amp; \mathrm{prediction} = \max_i( h_\theta ^{(i)}(x) )\newline\end{align*}\]</span>
+<h3 id="the-problem-of-overfitting">3.3 The Problem of Overfitting</h3>
+<ul>
+<li><p>underfitting -&gt; have high bias</p></li>
+<li><p>overfitting -&gt; has high variance</p></li>
+</ul>
+<p><code>overfitting</code> is caused by a hypothesis function that fits the available data but does not generalize well to predict new data. It is usually caused by a complicated function that creates a lot of unnecessary curves and angles unrelated to the data.</p>
+<p>There are two main options to address the issue of overfitting:</p>
+<ul>
+<li><p><strong>Reduce the number of features:</strong></p>
+<p>Manually select which features to keep. Use a model selection algorithm (studied later in the course).</p></li>
+<li><p><strong>Regularization</strong></p>
+<p>Keep all the features, but reduce the magnitude of parameters θj. Regularization works well when we have a lot of slightly useful features.</p>
+<p>Small values for parameters <span class="math inline">\(\theta_0, \theta_1...,\theta_n\)</span></p>
+<ul>
+<li>‘simpler’ hypothesis</li>
+<li>Less prone to overfitting</li>
+</ul></li>
+</ul>
+<p>Since that we have a lot of features(a hundred maybe), and dont know select which <span class="math inline">\(\theta\)</span> to shrink, so the basic idea is to do summation for all <span class="math inline">\(\theta_{1,n}\)</span>.</p>
+<p>Note that we should not shrink <span class="math inline">\(\theta_0\)</span>, which make very little difference to the result.</p>
+<span class="math display">\[\begin{align*}
+min_\theta\ \dfrac{1}{2m}\  \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})^2 + \lambda\ \sum_{j=1}^n \theta_j^2
+\end{align*}\]</span>
+<p>The λ, or lambda, is the <strong>regularization parameter</strong>. It determines how much the costs of our theta parameters are inflated.</p>
+<ul>
+<li><p>Goals of <span class="math inline">\(Lambda\)</span>:</p>
+<ul>
+<li><p>The first goal, capture it by the first goal objective, is that we would like to train, is that we would like to fit the training data well. We would like to fit the training set well.</p></li>
+<li><p>The second goal is, we want to keep the parameters small, and that’s captured by the second term, by the regularization objective.</p></li>
+</ul></li>
+</ul>
+<h4 id="regularized-linear-regression">Regularized Linear Regression</h4>
+<h5 id="on-gradient-decent">On Gradient decent</h5>
+<span class="math display">\[\begin{align*} &amp; \text{Repeat}\ \lbrace \newline &amp; \ \ \ \ \theta_0 := \theta_0 - \alpha\ \frac{1}{m}\ \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})x_0^{(i)} \newline &amp; \ \ \ \ \theta_j := \theta_j - \alpha\ \left[ \left( \frac{1}{m}\ \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)} \right) + \frac{\lambda}{m}\theta_j \right] &amp;\ \ \ \ \ \ \ \ \ \ j \in \lbrace 1,2...n\rbrace\newline &amp; \rbrace\\ \end{align*}\]</span>
+<p>And <span class="math inline">\(\theta_j\)</span> can represent with: <span class="math inline">\(\theta_j := \theta_j(1 - \alpha\frac{\lambda}{m}) - \alpha\frac{1}{m}\sum_{i=1}^m(h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)}\)</span></p>
+<p>The first term in the above equation, <span class="math inline">\(1 - \alpha\frac{\lambda}{m}\)</span> will usually less than 1, because alpha times lambda over m is going to be positive, and usually if your learning rate is small and if m is large, this is usually pretty small[6].</p>
+<p>Address to <span class="math inline">\(1 - \alpha\frac{\lambda}{m}\)</span> is less than 1, through the iteration, the <span class="math inline">\(\theta_j\)</span> will become smaller and smaller.</p>
+<h5 id="on-normal-equation">On Normal Equation</h5>
+<span class="math display">\[\begin{align*}&amp; \theta = \left( X^TX + \lambda \cdot L \right)^{-1} X^Ty \newline&amp; \text{where}\ \ L = \begin{bmatrix} 0 &amp; &amp; &amp; &amp; \newline &amp; 1 &amp; &amp; &amp; \newline &amp; &amp; 1 &amp; &amp; \newline &amp; &amp; &amp; \ddots &amp; \newline &amp; &amp; &amp; &amp; 1 \newline\end{bmatrix}\end{align*}\]</span>
+<p>Note that <span class="math inline">\(L\)</span> is an n-1 x n-1 matrix.</p>
+<p>If m &lt; n, then <span class="math inline">\(X^TX\)</span> is non-invertible. However, when we add the term λ⋅L, then <span class="math inline">\(X^TX + λ⋅L\)</span> becomes invertible.</p>
+<h4 id="regularized-logistic-regression">Regularized Logistic Regression</h4>
+<h5 id="cost-function-1">Cost Function</h5>
+<span class="math display">\[\begin{align*}
+J(\theta) = - \frac{1}{m} \sum_{i=1}^m \large[ y^{(i)}\ \log (h_\theta (x^{(i)})) + (1 - y^{(i)})\ \log (1 - h_\theta(x^{(i)}))\large] + \frac{\lambda}{2m}\sum_{j=1}^n \theta_j^2
+\end{align*}\]</span>
+<h4 id="gradient-descent-1">Gradient Descent</h4>
+<span class="math display">\[\begin{align*} &amp; \text{Repeat}\ \lbrace \newline &amp; \ \ \ \ \theta_0 := \theta_0 - \alpha\ \frac{1}{m}\ \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})x_0^{(i)} \newline &amp; \ \ \ \ \theta_j := \theta_j - \alpha\ \left[ \left( \frac{1}{m}\ \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)} \right) + \frac{\lambda}{m}\theta_j \right] &amp;\ \ \ \ \ \ \ \ \ \ j \in \lbrace 1,2...n\rbrace\newline &amp; \rbrace\\ \end{align*}\]</span>
+<h2 id="iv-neural-network">IV Neural Network</h2>
+<ul>
+<li>Denotes:</li>
+</ul>
+<p><span class="math inline">\(a_i^{(j)}\)</span>= “<em>activation</em>” of unit <span class="math inline">\(i\)</span> in layer <span class="math inline">\(j\)</span>.</p>
+<p><span class="math inline">\(\Theta^{(j)}\)</span> = matrix of weights controlling function mapping from layer <span class="math inline">\(j\)</span> to layer <span class="math inline">\(j+1\)</span>.</p>
+<p>If network has <span class="math inline">\(s_j\)</span> units in layer <span class="math inline">\(j\)</span>, <span class="math inline">\(s_j+1\)</span> units in layer <span class="math inline">\(j+1\)</span>, then <span class="math inline">\(\Theta^{(j)}\)</span> will be of dimension <span class="math inline">\(s_{j+1} \times (s_j+1)\)</span></p>
+<p><span class="math inline">\(L\)</span> = total <span class="math inline">\(no.\)</span> of layer of neural network</p>
+<p><span class="math inline">\(S_l\)</span> = <span class="math inline">\(no.\)</span> of units (not counting bias unit) in layer <span class="math inline">\(l\)</span></p>
+<h3 id="cost-function-2">Cost Function</h3>
+<span class="math display">\[\begin{gather*} J(\Theta) = - \frac{1}{m} \sum_{i=1}^m \sum_{k=1}^K \left[y^{(i)}_k \log ((h_\Theta (x^{(i)}))_k) + (1 - y^{(i)}_k)\log (1 - (h_\Theta(x^{(i)}))_k)\right] + \frac{\lambda}{2m}\sum_{l=1}^{L-1} \sum_{i=1}^{s_l} \sum_{j=1}^{s_{l+1}} ( \Theta_{j,i}^{(l)})^2\end{gather*}\]</span>
+<p>Which is similar to Logistic Regression:</p>
+<span class="math display">\[\begin{gather*}
+J(\theta) = - \frac{1}{m} \sum_{i=1}^m [ y^{(i)}\ \log (h_\theta (x^{(i)})) + (1 - y^{(i)})\ \log (1 - h_\theta(x^{(i)}))] + \frac{\lambda}{2m}\sum_{j=1}^n \theta_j^2
+\end{gather*}\]</span>
+<p>Note:</p>
+<ul>
+<li>the double sum simply adds up the logistic regression costs calculated for each cell in the output layer</li>
+<li>the triple sum simply adds up the squares of all the individual <span class="math inline">\(\Theta\)</span>s in the entire network.</li>
+<li>the <span class="math inline">\(i\)</span> in the triple sum does not refer to training example <span class="math inline">\(i\)</span>.</li>
+</ul>
+<h3 id="gradient-computation">Gradient computation</h3>
+<span class="math display">\[\begin{gather*} J(\Theta) = - \frac{1}{m} \sum_{i=1}^m \sum_{k=1}^K \left[y^{(i)}_k \log ((h_\Theta (x^{(i)}))_k) + (1 - y^{(i)}_k)\log (1 - (h_\Theta(x^{(i)}))_k)\right] + \frac{\lambda}{2m}\sum_{l=1}^{L-1} \sum_{i=1}^{s_l} \sum_{j=1}^{s_{l+1}} ( \Theta_{j,i}^{(l)})^2\end{gather*}\]</span>
+<p><strong>Goal</strong>:</p>
+<span class="math display">\[\begin{gather*}
+\min_\Theta J(\Theta)
+\end{gather*}\]</span>
+<p><strong>Need code to compute</strong>:</p>
+<span class="math display">\[\begin{gather*}
+J(\Theta)\ {and}\ \dfrac{\partial}{\partial \Theta_{i,j}^{(l)}}J(\Theta)
+\end{gather*}\]</span>
+<h4 id="backpropagation-algorithm">Backpropagation algorithm:</h4>
+<p>Intuition: <span class="math inline">\(\delta^l_j\)</span> = “error” of node <span class="math inline">\(j\)</span> in layer <span class="math inline">\(l\)</span></p>
+<p>For each output unit(L=4): <span class="math inline">\(\delta_j^{(4)}=a_j^{(4)}-y_j\)</span></p>
+<ul>
+<li>[1] What is machine Learning https://www.coursera.org/learn/machine-learning/supplement/aAgxl/what-is-machine-learning</li>
+<li>[2] Supervised Learning https://www.coursera.org/learn/machine-learning/supplement/NKVJ0/supervised-learning</li>
+<li>[3] Unpuservised Learning https://www.coursera.org/learn/machine-learning/supplement/1O0Bk/unsupervised-learning</li>
+<li>[4] Cost Function https://www.coursera.org/learn/machine-learning/supplement/nhzyF/cost-function</li>
+<li>[5] Gradeient descent in parctice I Feature Scaling, https://www.coursera.org/learn/machine-learning/supplement/CTA0D/gradient-descent-in-practice-i-feature-scaling</li>
+<li><p>[6] Regularized liner regression https://www.coursera.org/learn/machine-learning/lecture/QrMXd/regularized-linear-regression</p></li>
+<li><p>[7] Simplified Cost Function https://www.coursera.org/learn/machine-learning/supplement/0hpMl/simplified-cost-function-and-gradient-descent</p></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode octave"><code class="sourceCode octave"></code></pre></div>
+
+        </div>
+
+        <div id="footer">
+            Site proudly generated by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        </div>
+    </body>
+</html>
