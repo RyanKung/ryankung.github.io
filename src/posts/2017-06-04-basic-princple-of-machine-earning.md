@@ -4,9 +4,8 @@
 <center><h4>Ryan J. Kung</h4></center>
 <center><h4>ryankung(at)ieee.org<h4></center>
 
-<h3><center>Abstract</center></h3>
+<h3> <center>Abstract</center></h3>
 
-This article is actually a summarize note of Andrew Ng's Machine learning course, from part Week 1 to week3. Mainly includes two parts, the Linear Regression and the Logistic Regression. It also provides mathematiclly describes for MSE and MLE, which may help us to understand the processing of Regression or Classification.
 
 
 
@@ -52,6 +51,8 @@ Two definitions of Machine Learning are offered:
 #### Hypothesis Function
 
 * **Goal**: Given a Training Set, to Learn a Function $h: X \rightarrow Y$, So that $h(x)$ is a $good$ predictor for the corresponding value $y$.
+
+Note that the $hypothesis\ function$ is denoted as $\phi(x)$ in the Deep Learning book.
 
 #### Cost Function[4]
 
@@ -246,7 +247,7 @@ h_{\theta}(x) \in [0, 1]
 h_{\theta}(x)=g(\theta^Tx)
 \end{align*}
 
-With *sigmoid function* (or *logistic function*):
+With *sigmoid function* (or *logistic function*, also *activation function* in *neural netowrk* case):
 
 \begin{align*}
 g(z)=\frac{1}{1+e^{-z}}\\
@@ -400,6 +401,64 @@ J(\theta) = - \frac{1}{m} \sum_{i=1}^m \large[ y^{(i)}\ \log (h_\theta (x^{(i)})
 \begin{align*} & \text{Repeat}\ \lbrace \newline & \ \ \ \ \theta_0 := \theta_0 - \alpha\ \frac{1}{m}\ \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})x_0^{(i)} \newline & \ \ \ \ \theta_j := \theta_j - \alpha\ \left[ \left( \frac{1}{m}\ \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})x_j^{(i)} \right) + \frac{\lambda}{m}\theta_j \right] &\ \ \ \ \ \ \ \ \ \ j \in \lbrace 1,2...n\rbrace\newline & \rbrace\\ \end{align*}
 
 
+## IV Neural Network
+
+* Denotes:
+
+$a_i^{(j)}$= "*activation*" of unit $i$ in layer $j$.
+
+$\Theta^{(j)}$ = matrix of weights controlling function mapping from layer $j$ to layer $j+1$.
+
+If network has $s_j$ units in layer $j$, $s_j+1$ units in layer $j+1$, then $\Theta^{(j)}$ will be of dimension $s_{j+1} \times (s_j+1)$
+
+$L$ = total $no.$ of layer of neural network
+
+$S_l$ = $no.$ of units (not counting bias unit) in layer $l$
+
+### Cost Function
+
+\begin{gather*} J(\Theta) = - \frac{1}{m} \sum_{i=1}^m \sum_{k=1}^K \left[y^{(i)}_k \log ((h_\Theta (x^{(i)}))_k) + (1 - y^{(i)}_k)\log (1 - (h_\Theta(x^{(i)}))_k)\right] + \frac{\lambda}{2m}\sum_{l=1}^{L-1} \sum_{i=1}^{s_l} \sum_{j=1}^{s_{l+1}} ( \Theta_{j,i}^{(l)})^2\end{gather*}
+
+Which is similar to Logistic Regression:
+
+\begin{gather*}
+J(\theta) = - \frac{1}{m} \sum_{i=1}^m [ y^{(i)}\ \log (h_\theta (x^{(i)})) + (1 - y^{(i)})\ \log (1 - h_\theta(x^{(i)}))] + \frac{\lambda}{2m}\sum_{j=1}^n \theta_j^2
+\end{gather*}
+
+Note:
+
+* the double sum simply adds up the logistic regression costs calculated for each cell in the output layer
+* the triple sum simply adds up the squares of all the individual $\Theta$s in the entire network.
+* the $i$ in the triple sum does not refer to training example $i$.
+
+### Gradient computation
+
+\begin{gather*} J(\Theta) = - \frac{1}{m} \sum_{i=1}^m \sum_{k=1}^K \left[y^{(i)}_k \log ((h_\Theta (x^{(i)}))_k) + (1 - y^{(i)}_k)\log (1 - (h_\Theta(x^{(i)}))_k)\right] + \frac{\lambda}{2m}\sum_{l=1}^{L-1} \sum_{i=1}^{s_l} \sum_{j=1}^{s_{l+1}} ( \Theta_{j,i}^{(l)})^2\end{gather*}
+
+
+**Goal**:
+
+\begin{gather*}
+\min_\Theta J(\Theta)
+\end{gather*}
+
+**Need code to compute**:
+
+\begin{gather*}
+J(\Theta)\ {and}\ \dfrac{\partial}{\partial \Theta_{i,j}^{(l)}}J(\Theta)
+\end{gather*}
+
+
+#### Backpropagation algorithm:
+
+Intuition: $\delta^l_j$ = "error" of node $j$ in layer $l$
+
+For each output unit(L=4): $\delta_j^{(4)}=a_j^{(4)}-y_j$
+
+
+
+
+
 * [1] What is machine Learning https://www.coursera.org/learn/machine-learning/supplement/aAgxl/what-is-machine-learning
 * [2] Supervised Learning https://www.coursera.org/learn/machine-learning/supplement/NKVJ0/supervised-learning
 * [3] Unpuservised Learning https://www.coursera.org/learn/machine-learning/supplement/1O0Bk/unsupervised-learning
@@ -408,3 +467,8 @@ J(\theta) = - \frac{1}{m} \sum_{i=1}^m \large[ y^{(i)}\ \log (h_\theta (x^{(i)})
 * [6] Regularized liner regression https://www.coursera.org/learn/machine-learning/lecture/QrMXd/regularized-linear-regression
 
 * [7] Simplified Cost Function https://www.coursera.org/learn/machine-learning/supplement/0hpMl/simplified-cost-function-and-gradient-descent
+
+
+```octave
+
+```
