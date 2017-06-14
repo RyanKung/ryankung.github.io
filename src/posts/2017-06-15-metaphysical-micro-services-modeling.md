@@ -1,6 +1,6 @@
 <h1><center>Metaphysical Micro-Services Modeling</center></h1>
 
-<center>**Ryan J. Kung**</cener>
+<center>**Ryan J. Kung**</center>
 <center>**ryankung(at)ieee.org**</center>
 ## I Metaphysical Modeling
 
