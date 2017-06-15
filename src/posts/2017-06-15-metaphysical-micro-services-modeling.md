@@ -7,9 +7,7 @@
 There are two ways in which the term modeling can be understood:
 **descriptive** and **preciptive**. A descriptive model represent an existing
 system Thus a presciptive model is one that can be used to construct the target
-system[1].
-
-Above all we should define that our Distrbute System should obey follow rules.
+system[1]. We wont try to model classic or pure micro-services archicture there, but we may needs to obey follow rules which discript well about micro-services
 
 * Single-purpose
 * Modular and independent
