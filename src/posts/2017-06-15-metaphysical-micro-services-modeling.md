@@ -118,7 +118,7 @@ by multiple services in same time may occor unpredictable result or
 $mutex\rightarrow deadlock$. To avoid it, we may needs to discript the
 side-effect more strictly. Some GPL such like `Haskell` provide a abstruct data
 structure for manage it called `monad`, thus there is `IO monad`, `State
-Monad`, `Pal Monad`, `Eval Monad`.
+Monad`, `Pal Monad`, `Eval Monad`. Word `monad` actually means that a operators that don't have `inverse element`.
 
 `Qubit`[4] is thus a system for manage side-effect data. The basic idea of
 Qubit is from `FRP` and `Eval Monad`. Qubit is a multi-process services which
