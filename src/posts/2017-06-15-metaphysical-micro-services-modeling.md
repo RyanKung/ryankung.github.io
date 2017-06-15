@@ -24,13 +24,12 @@ $g$ $iff$: $f\circ g(x)=g \circ f(x)$.
 
 #### 1.1.2 Compose Function
 
-In mathematic, compose of functions is that $f(g(x)) = f \circ g (x)$, which
+In mathematic, compose of functions $f(g(x)) = f \circ g (x)$ can
 can be represent that $compose ( f, g)(x)$, or in S-exp $(compose\ f'\ g')$,
 where $\circ$ is a $left\ prefix$ function.
 
-We can compose functions in any order iff they are $Pure$ or $Equivariant$,
-otherwise we may need to define some fixed oreder function with $J=f\circ g$,
-which wile hidden function $f, g$ in our descrpiptive modeling.
+Functions can be composed with any order iff they are $Pure$ or $Equivariant$, otherwise we may need to define some fixed oreder function with $J=f\circ g$,
+which have some hidden functions like $f$ and $g$ in our descrpiptive scope.
 
 
 #### 1.1.2 Side-Effect
