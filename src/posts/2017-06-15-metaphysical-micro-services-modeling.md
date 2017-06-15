@@ -9,6 +9,12 @@ There are two ways in which the term modeling can be understood:
 system Thus a presciptive model is one that can be used to construct the target
 system[1].
 
+Above all we should define that our Distrbute System should obey follow rules.
+
+* Single-purpose
+* Modular and independent
+* Does not share a persistence layer
+
 ### 1.1 Descriptive with Functional
 
 A Functional is a Function which accept a paramater $\theta$ and output a
