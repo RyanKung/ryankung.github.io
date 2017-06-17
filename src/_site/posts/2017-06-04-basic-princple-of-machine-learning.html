@@ -333,6 +333,7 @@ J(\theta) = - \frac{1}{m} \sum_{i=1}^m \large[ y^{(i)}\ \log (h_\theta (x^{(i)})
 <p>If network has <span class="math inline">\(s_j\)</span> units in layer <span class="math inline">\(j\)</span>, <span class="math inline">\(s_j+1\)</span> units in layer <span class="math inline">\(j+1\)</span>, then <span class="math inline">\(\Theta^{(j)}\)</span> will be of dimension <span class="math inline">\(s_{j+1} \times (s_j+1)\)</span></p>
 <p><span class="math inline">\(L\)</span> = total <span class="math inline">\(no.\)</span> of layer of neural network</p>
 <p><span class="math inline">\(S_l\)</span> = <span class="math inline">\(no.\)</span> of units (not counting bias unit) in layer <span class="math inline">\(l\)</span></p>
+<p><span class="math inline">\(K\)</span> = the number of units in the output layer.</p>
 <h3 id="cost-function-2">Cost Function</h3>
 <span class="math display">\[\begin{gather*} J(\Theta) = - \frac{1}{m} \sum_{i=1}^m \sum_{k=1}^K \left[y^{(i)}_k \log ((h_\Theta (x^{(i)}))_k) + (1 - y^{(i)}_k)\log (1 - (h_\Theta(x^{(i)}))_k)\right] + \frac{\lambda}{2m}\sum_{l=1}^{L-1} \sum_{i=1}^{s_l} \sum_{j=1}^{s_{l+1}} ( \Theta_{j,i}^{(l)})^2\end{gather*}\]</span>
 <p>Which is similar to Logistic Regression:</p>
@@ -345,6 +346,11 @@ J(\theta) = - \frac{1}{m} \sum_{i=1}^m [ y^{(i)}\ \log (h_\theta (x^{(i)})) + (1
 <li>the triple sum simply adds up the squares of all the individual <span class="math inline">\(\Theta\)</span>s in the entire network.</li>
 <li>the <span class="math inline">\(i\)</span> in the triple sum does not refer to training example <span class="math inline">\(i\)</span>.</li>
 </ul>
+<p>So we Focusing on a single example <span class="math inline">\(x^{(i)}\)</span>, <span class="math inline">\(y^{(i)}\)</span>, the cause of 1 output unit, and ignore the reqularization (<span class="math inline">\(\lambda=0\)</span>)</p>
+<span class="math display">\[\begin{gather*}
+cost(i) = y^{(i)}\log{h_{\Theta}(x^{(i)}+(1-y^{(i)}logh_{\Theta}(x^{(i)}))}
+\end{gather*}\]</span>
+<p>We can think of that <span class="math inline">\(cost(i)\approx (h_{\Theta}(x^{(i)}-y^{i}))^2\)</span> which is <span class="math inline">\(MSE\)</span>, for judge how well is the network doing on example <span class="math inline">\(i\)</span>.</p>
 <h3 id="gradient-computation">Gradient computation</h3>
 <span class="math display">\[\begin{gather*} J(\Theta) = - \frac{1}{m} \sum_{i=1}^m \sum_{k=1}^K \left[y^{(i)}_k \log ((h_\Theta (x^{(i)}))_k) + (1 - y^{(i)}_k)\log (1 - (h_\Theta(x^{(i)}))_k)\right] + \frac{\lambda}{2m}\sum_{l=1}^{L-1} \sum_{i=1}^{s_l} \sum_{j=1}^{s_{l+1}} ( \Theta_{j,i}^{(l)})^2\end{gather*}\]</span>
 <p><strong>Goal</strong>:</p>
@@ -355,9 +361,61 @@ J(\theta) = - \frac{1}{m} \sum_{i=1}^m [ y^{(i)}\ \log (h_\theta (x^{(i)})) + (1
 <span class="math display">\[\begin{gather*}
 J(\Theta)\ {and}\ \dfrac{\partial}{\partial \Theta_{i,j}^{(l)}}J(\Theta)
 \end{gather*}\]</span>
-<h4 id="backpropagation-algorithm">Backpropagation algorithm:</h4>
-<p>Intuition: <span class="math inline">\(\delta^l_j\)</span> = “error” of node <span class="math inline">\(j\)</span> in layer <span class="math inline">\(l\)</span></p>
-<p>For each output unit(L=4): <span class="math inline">\(\delta_j^{(4)}=a_j^{(4)}-y_j\)</span></p>
+<h3 id="backpropagation-algorithm">Backpropagation algorithm:</h3>
+<p><code>Backpropagation</code> is neural-network terminology for minimizing our cost function, just like what we were doing with gradient descent in logistic and linear regression.</p>
+<p>Intuition: <span class="math inline">\(\delta^l_j\)</span> = “error” of cost for <span class="math inline">\(a_j^{(l)}\)</span> (the activation value on node <span class="math inline">\(j\)</span> in layer <span class="math inline">\(l\)</span>):</p>
+<p>Formally, <span class="math inline">\(\delta_j^{(l)}=\frac{\partial}{\partial{z_j^{(l)}}}cost(i)\)</span> (for <span class="math inline">\(j \geq 0\)</span>), where:</p>
+<span class="math display">\[\begin{gather*}
+cost(i) = y^{(i)}\log{h_{\Theta}(x^{(i)}+(1-y^{(i)}logh_{\Theta}(x^{(i)}))}
+\end{gather*}\]</span>
+<h5 id="in-example-of-applying-backpropagation-algorithm-on-a-l4-network"><strong>In example of applying backpropagation algorithm on a (L=4) Network:</strong></h5>
+<span class="math display">\[\begin{gather*}
+\delta_j^{(4)}=a_j^{(4)}-y_j=(h_{\Theta}(x))_j-y_i
+\end{gather*}\]</span>
+<p>Each of these <span class="math inline">\(\delta_j\)</span>, <span class="math inline">\(a_j\)</span> and <span class="math inline">\(y\)</span>, is a vector whose dimension is equal to <span class="math inline">\(K\)</span>.</p>
+<span class="math display">\[\begin{gather*}
+\delta^{(3)}=(\Theta^{(3)})^T\delta^{(4)}.*g'(z^{(3)})
+\end{gather*}\]</span>
+<span class="math display">\[\begin{gather*}
+\delta^{(2)}=(\Theta^{(2)})^T\delta^{(3)}.*g'(z^{(2)})
+\end{gather*}\]</span>
+<p>This term <span class="math inline">\(g'(z^{(l)})\)</span>, that formally is actually the derivative of the activation function <span class="math inline">\(g\)</span> evaluated at the input values given by <span class="math inline">\(z^{(l)}\)</span>.</p>
+<p><strong>So we can describe the algorithm as:</strong></p>
+<p>Training set <span class="math inline">\({(x^{(1)}, y^{(1)}),...,(x^{(m)},y^{(m)})}\)</span></p>
+<p>Set <span class="math inline">\(\Delta^{(l)}_{ij}=0\)</span> (for all <span class="math inline">\(l, i, j)\)</span></p>
+<p><strong>For</strong> <span class="math inline">\(i=1\)</span> <strong>to</strong> <span class="math inline">\(m\)</span> {</p>
+<p>— Set <span class="math inline">\(a^{(1)} = x^{(i)}\)</span></p>
+<p>— Perform forward proagation to compute <span class="math inline">\(a^{(l)}\)</span> for <span class="math inline">\(l=2,3,...,L\)</span></p>
+<p>— Using <span class="math inline">\(y^{(i)}\)</span>, compute <span class="math inline">\(\delta^{(L)}=a^{(L)}-y^{(i)}\)</span></p>
+<p>— Compute <span class="math inline">\(\delta^{(L-1)},\delta^{(L-2)},...,\delta^{(2)}\)</span><br />
+— <span class="math inline">\(\Delta^{(l)}_{ij}:=\Delta^{(l)}_ij+a^{(l)}_j\delta^{(l+1)}_i\)</span></p>
+<p>}</p>
+<p><span class="math inline">\(D^{(l)}_{ij}:=\frac{1}{m}\Delta^{(l)}_{ij}+\lambda\Theta^{(l)}_{ij}\)</span> if <span class="math inline">\(j \neq 0\)</span></p>
+<p><span class="math inline">\(D^{(l)}_{ij}:=\frac{1}{m}\Delta^{(l)}_{ij}\)</span> if <span class="math inline">\(j = 0\)</span></p>
+<p>Finally we got:</p>
+<span class="math display">\[\begin{gather*}
+\frac{\partial}{\partial{\Theta}_{ij}^{(l)}}J(\Theta)=D^{(l)}_{ij}
+\end{gather*}\]</span>
+<h3 id="gradient-checking">Gradient Checking</h3>
+<p>Gradient checking will assure that our backpropagation works as intended. We can approximate the derivative of our cost function with:</p>
+<span class="math display">\[\begin{gather*}
+\dfrac{\partial}{\partial\Theta}J(\Theta) \approx \dfrac{J(\Theta + \epsilon) - J(\Theta - \epsilon)}{2\epsilon}
+\end{gather*}\]</span>
+<p>With multiple theta matrices, we can approximate the derivative with respect to <span class="math inline">\(\Theta_j\)</span> as follows:</p>
+<span class="math display">\[\begin{gather*}
+\dfrac{\partial}{\partial\Theta_j}J(\Theta) \approx \dfrac{J(\Theta_1, \dots, \Theta_j + \epsilon, \dots, \Theta_n) - J(\Theta_1, \dots, \Theta_j - \epsilon, \dots, \Theta_n)}{2\epsilon}\end{gather*}\]</span>
+<p>A small value for <span class="math inline">\(\epsilon\)</span> such as <span class="math inline">\(\epsilon=10−4\)</span>, guarantees that the math works out properly. If the value for <span class="math inline">\(\epsilon\)</span> is too small, we can end up with numerical problems</p>
+<p>Hence, we are only adding or subtracting epsilon to the Θj matrix. In octave we can do it as follows:</p>
+<div class="sourceCode"><pre class="sourceCode octave"><code class="sourceCode octave">epsilon = <span class="fl">1e-4</span>;
+for <span class="bn">i</span> = <span class="fl">1</span>:n,
+  thetaPlus = theta;
+  thetaPlus(<span class="bn">i</span>) += epsilon;
+  thetaMinus = theta;
+  thetaMinus(<span class="bn">i</span>) -= epsilon;
+  gradApprox(<span class="bn">i</span>) = (<span class="bn">J</span>(thetaPlus) - <span class="bn">J</span>(thetaMinus))/(<span class="fl">2</span>*epsilon)
+end;</code></pre></div>
+<p>We previously saw how to calculate the deltaVector. So once we compute our gradApprox vector, we can check that <span class="math inline">\(gradApprox \approx deltaVector\)</span>.</p>
+<p>Once you have verified once that your backpropagation algorithm is correct, you don’t need to compute gradApprox again. <strong>The code to compute gradApprox can be very slow</strong>.</p>
 <ul>
 <li>[1] What is machine Learning https://www.coursera.org/learn/machine-learning/supplement/aAgxl/what-is-machine-learning</li>
 <li>[2] Supervised Learning https://www.coursera.org/learn/machine-learning/supplement/NKVJ0/supervised-learning</li>

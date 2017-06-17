@@ -415,6 +415,8 @@ $L$ = total $no.$ of layer of neural network
 
 $S_l$ = $no.$ of units (not counting bias unit) in layer $l$
 
+$K$ = the number of units in the output layer.
+
 ### Cost Function
 
 \begin{gather*} J(\Theta) = - \frac{1}{m} \sum_{i=1}^m \sum_{k=1}^K \left[y^{(i)}_k \log ((h_\Theta (x^{(i)}))_k) + (1 - y^{(i)}_k)\log (1 - (h_\Theta(x^{(i)}))_k)\right] + \frac{\lambda}{2m}\sum_{l=1}^{L-1} \sum_{i=1}^{s_l} \sum_{j=1}^{s_{l+1}} ( \Theta_{j,i}^{(l)})^2\end{gather*}
@@ -430,6 +432,14 @@ Note:
 * the double sum simply adds up the logistic regression costs calculated for each cell in the output layer
 * the triple sum simply adds up the squares of all the individual $\Theta$s in the entire network.
 * the $i$ in the triple sum does not refer to training example $i$.
+
+So we Focusing on a single example $x^{(i)}$, $y^{(i)}$, the cause of 1 output unit, and ignore the reqularization ($\lambda=0$)
+
+\begin{gather*}
+cost(i) = y^{(i)}\log{h_{\Theta}(x^{(i)}+(1-y^{(i)}logh_{\Theta}(x^{(i)}))}
+\end{gather*}
+
+We can think of that $cost(i)\approx (h_{\Theta}(x^{(i)}-y^{i}))^2$ which is $MSE$, for judge how well is the network doing on example $i$.
 
 ### Gradient computation
 
@@ -449,15 +459,104 @@ J(\Theta)\ {and}\ \dfrac{\partial}{\partial \Theta_{i,j}^{(l)}}J(\Theta)
 \end{gather*}
 
 
-#### Backpropagation algorithm:
+### Backpropagation algorithm:
 
-Intuition: $\delta^l_j$ = "error" of node $j$ in layer $l$
-
-For each output unit(L=4): $\delta_j^{(4)}=a_j^{(4)}-y_j$
+`Backpropagation` is neural-network terminology for minimizing our cost function, just like what we were doing with gradient descent in logistic and linear regression.
 
 
+Intuition: $\delta^l_j$ = "error" of cost for $a_j^{(l)}$ (the activation value on node $j$ in layer $l$): 
+
+Formally, $\delta_j^{(l)}=\frac{\partial}{\partial{z_j^{(l)}}}cost(i)$ (for $j \geq 0$), where:
+
+\begin{gather*}
+cost(i) = y^{(i)}\log{h_{\Theta}(x^{(i)}+(1-y^{(i)}logh_{\Theta}(x^{(i)}))}
+\end{gather*}
 
 
+
+
+##### **In example of applying backpropagation algorithm on a (L=4) Network:**
+\begin{gather*}
+\delta_j^{(4)}=a_j^{(4)}-y_j=(h_{\Theta}(x))_j-y_i
+\end{gather*}
+
+
+Each of these $\delta_j$, $a_j$ and $y$, is a vector whose dimension is equal to $K$.
+
+\begin{gather*}
+\delta^{(3)}=(\Theta^{(3)})^T\delta^{(4)}.*g'(z^{(3)})
+\end{gather*}
+
+\begin{gather*}
+\delta^{(2)}=(\Theta^{(2)})^T\delta^{(3)}.*g'(z^{(2)})
+\end{gather*}
+
+
+This term $g'(z^{(l)})$, that formally is actually the derivative of the activation function $g$ evaluated at the input values given by $z^{(l)}$. 
+
+**So we can describe the algorithm as:**
+
+Training set ${(x^{(1)}, y^{(1)}),...,(x^{(m)},y^{(m)})}$
+
+Set $\Delta^{(l)}_{ij}=0$ (for all $l, i, j)$
+
+**For** $i=1$ **to** $m$ {
+
+--- Set $a^{(1)} = x^{(i)}$
+
+--- Perform forward proagation to compute $a^{(l)}$ for $l=2,3,...,L$    
+
+--- Using $y^{(i)}$, compute $\delta^{(L)}=a^{(L)}-y^{(i)}$
+
+--- Compute $\delta^{(L-1)},\delta^{(L-2)},...,\delta^{(2)}$    
+--- $\Delta^{(l)}_{ij}:=\Delta^{(l)}_ij+a^{(l)}_j\delta^{(l+1)}_i$
+
+}
+
+$D^{(l)}_{ij}:=\frac{1}{m}\Delta^{(l)}_{ij}+\lambda\Theta^{(l)}_{ij}$ if $j \neq 0$
+
+$D^{(l)}_{ij}:=\frac{1}{m}\Delta^{(l)}_{ij}$ if $j = 0$
+
+Finally we got:
+
+\begin{gather*}
+\frac{\partial}{\partial{\Theta}_{ij}^{(l)}}J(\Theta)=D^{(l)}_{ij}
+\end{gather*}
+
+
+### Gradient Checking
+
+Gradient checking will assure that our backpropagation works as intended. We can approximate the derivative of our cost function with:
+
+\begin{gather*}
+\dfrac{\partial}{\partial\Theta}J(\Theta) \approx \dfrac{J(\Theta + \epsilon) - J(\Theta - \epsilon)}{2\epsilon}
+\end{gather*}
+
+With multiple theta matrices, we can approximate the derivative with respect to $\Theta_j$ as follows:
+
+\begin{gather*}
+\dfrac{\partial}{\partial\Theta_j}J(\Theta) \approx \dfrac{J(\Theta_1, \dots, \Theta_j + \epsilon, \dots, \Theta_n) - J(\Theta_1, \dots, \Theta_j - \epsilon, \dots, \Theta_n)}{2\epsilon}\end{gather*}
+
+A small value for $\epsilon$ such as $\epsilon=10−4$, guarantees that the math works out properly. If the value for $\epsilon$ is too small, we can end up with numerical problems
+
+
+
+Hence, we are only adding or subtracting epsilon to the Θj matrix. In octave we can do it as follows:
+
+```octave
+epsilon = 1e-4;
+for i = 1:n,
+  thetaPlus = theta;
+  thetaPlus(i) += epsilon;
+  thetaMinus = theta;
+  thetaMinus(i) -= epsilon;
+  gradApprox(i) = (J(thetaPlus) - J(thetaMinus))/(2*epsilon)
+end;
+```
+
+We previously saw how to calculate the deltaVector. So once we compute our gradApprox vector, we can check that $gradApprox \approx deltaVector$.
+
+Once you have verified once that your backpropagation algorithm is correct, you don't need to compute gradApprox again. **The code to compute gradApprox can be very slow**.
 
 * [1] What is machine Learning https://www.coursera.org/learn/machine-learning/supplement/aAgxl/what-is-machine-learning
 * [2] Supervised Learning https://www.coursera.org/learn/machine-learning/supplement/NKVJ0/supervised-learning
