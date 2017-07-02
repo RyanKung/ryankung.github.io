@@ -4,15 +4,6 @@
 <center><h4>Ryan J. Kung</h4></center>
 <center><h4>ryankung(at)ieee.org<h4></center>
 
-<h3> <center>Abstract</center></h3>
-
-
-
-
-
-
-
-
 
 ## I Introduction
 
