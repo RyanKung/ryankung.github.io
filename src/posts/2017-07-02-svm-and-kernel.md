@@ -68,7 +68,7 @@ f_i \approx exp(-\frac{0^2}{2\sigma^2})\approx 1
 If $x$ far from $l^{(i)}$: 
 
 \begin{align*}
-f_i=exp(-\frac{{large\ number}^2}{2\sigma^2})\approx 0
+f_i=exp(-\frac{large\ number^2}{2\sigma^2})\approx 0
 \end{align*}
 
 
