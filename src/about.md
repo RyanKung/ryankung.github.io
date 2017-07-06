@@ -14,9 +14,10 @@
 
 ## Experience
 
-* 2011-2013 Front-end Engineer of Douban Ltd.
+* 2011-2013 Full-Stack Engineer of Douban Ltd.
 * 2013-2014 Data Scientist of ImayGou Ltd.
 * 2016-2017 Software Architect of Xunlei (XNET) Ltd.
+* 2017- ------  Software Architect of Bixin Ltd.
 
 ## Publication
 
