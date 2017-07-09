@@ -307,8 +307,3 @@ It might work OK, but **isn't a good way** to **address** overfitting. The fact 
 ## III Reference
 
 [1] Machine Learning, Andrew Ng, https://www.coursera.org/learn/machine-learning
-
-
-```python
-
-```
