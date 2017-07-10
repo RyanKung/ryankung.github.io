@@ -49,11 +49,11 @@
 * **Pomodoro**,  Simple implementation for Pomodoro Technique 
 
 ## Contributed
-* Tensorflow -- Computation using data flow graphs for scalable machine learning
-* Bitcoin —— Bitcoin Core integration/staging tree
-* Werkzeug —— A flexible WSGI implementation and toolkit
-* pulsar -- A scalable async network framework implementation of CSP
-* symon -- Tiny graphical system monitor for Emacs
+* **Tensorflow** -- Computation using data flow graphs for scalable machine learning
+* **Bitcoin** —— Bitcoin Core integration/staging tree
+* **Werkzeug** —— A flexible WSGI implementation and toolkit
+* **pulsar** -- A scalable async network framework implementation of CSP
+* **symon** -- Tiny graphical system monitor for Emacs
 
 ## Professional Qualification
 
