@@ -242,7 +242,7 @@ Check if:
 \end{align*}
 
 
-**For Optimize**:
+**For Optimization**:
 
 
 \begin{gather}
