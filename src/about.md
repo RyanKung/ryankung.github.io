@@ -47,6 +47,7 @@
 * **fn-compose**,  Make python support function compostion with matrix_mul operator 
 * **shadowsocks4blackberry**, Ported shadowsocks-libev to blackberry QNX OS.
 * **Pomodoro**,  Simple implementation for Pomodoro Technique 
+
 ## Contributed
 * Tensorflow -- Computation using data flow graphs for scalable machine learning
 * Bitcoin —— Bitcoin Core integration/staging tree
