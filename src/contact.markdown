@@ -5,6 +5,7 @@ title: Contact
 - Email: ryankung(at)ieee.org
 - Twitter: http://twitter.com/ryankung
 - Github: http://github.com/ryankung
+- Douban: http://www.douban.com/people/ryankung
 - Bitcoin Address: 1MJ4FoCzCsHUxcgWjMSBNfcQuVA9ZvKAEH
 - GPG Public Key:
 
