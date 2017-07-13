@@ -7,7 +7,7 @@
 
 ### 1.1 causal and none-causal languages
 
-Special $modeling\ languages$ have been developed to facilitate modeling and simulation. There are two broad language categories in this domain. 
+Special *modeling languages* have been developed to facilitate modeling and simulation. There are two broad language categories in this domain. 
 
 **Causal (or block-oriented) languages** and **none-causal (or object-oriented) language**.
 
