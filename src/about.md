@@ -44,8 +44,11 @@
 * **pWsgi**, pWSGI is a WSGI wrapper with pulsar. It can easily map a wsgi app (such as Flask app or djang app) to a pulsar wsgi app with full features supporting by pulsar.
 
 * **rc4-python3**, rc4 implementation via py3.
+
 * **fn-compose**,  Make python support function compostion with matrix_mul operator 
+
 * **shadowsocks4blackberry**, Ported shadowsocks-libev to blackberry QNX OS.
+
 * **Pomodoro**,  Simple implementation for Pomodoro Technique 
 
 ## Contributed
@@ -58,4 +61,7 @@
 ## Professional Qualification
 
 * Founding Member of Computational Intelligence Society (IEEE)
-* Certificate for Quantum Mechanics and Quantum Computation (Berkely)
+
+* Certificate for Quantum Mechanics and Quantum Computation By Berkely University ond Edx
+
+* Certificate for Machine Learning by Stanford University on Coursera.
