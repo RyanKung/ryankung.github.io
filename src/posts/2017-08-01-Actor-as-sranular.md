@@ -1,8 +1,8 @@
 <h1><center>Actor as Sranular, A Isomorphism Micro-services Architecture</center></h1>
 
 
-**<center>Ryan J.K</center>**
-**<center>ryankung(at)ieee.org</center>**
+<center><h4>Ryan J.K</h4></center>
+<center><h4>ryankung(at)ieee.org</h4></center>
 
 
 ## I Preface
