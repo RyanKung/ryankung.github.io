@@ -43,8 +43,6 @@ ryankung(at)ieee.org
 </center>
 <p>**</p>
 <h2 id="i-preface">I Preface</h2>
-<p><strong>TL;DR：The problem is a distributed problem, thus Microservices Architecture is Bullshit</strong></p>
-<hr />
 <p>Micro-Services was introducted by Peter Rodgers and Juval Löwy in 2005 [1,2,3]. The philosophy of it essentially equals to the Unix philosophy of “Do one thing and do it well”. [4][5][6]:</p>
 <ul>
 <li><p>The services are small - fine-grained to perform a single function.</p></li>
@@ -56,15 +54,12 @@ ryankung(at)ieee.org
 <p>In the fact, Addressing to the granularity of services, the realworld usecase of microservices architecture is usually either a distributed system or based on a distributed system such as some raft or paxos implementation like etcd[9], consul[10] and zookeeper[11].</p>
 <p>Thus the “Unix Philosophy” of “Do one thing and do it well” is actually talking about the Philosophy of about the Distributed System archiecture“, which is also descriping how”micro-services architecture&quot; works.</p>
 <h2 id="ii-none-causal-modeling">II None-causal modeling</h2>
-<p><strong>TL;DR: CPS is a none-causal language for processing modeling, and, Two Turing Award laureates thinks CSP (Actor model) is good for distributed system, and it’s really so fucking good</strong></p>
 <h3 id="think-in-the-domain">2.1 Think in the Domain</h3>
-<p><strong>TR;TD: DSLs is a model complete method for solving problem</strong></p>
 <p>The most popular modeling method of micro-services nowadays is DDD (Domain-Driven Design), which trying to bind the model with the concrete implementation. The premise of the DDD is to make the modeling of the function or service be focus on the core domain and domain logic.[15][16]</p>
 <p>When talking about Domain-Driven Design, we usually connected it with the DSL (Domain-Specific Languages). There are two ways in which the modeling can be understood: descriptive and preciptive. A descriptive model represent an existing system Thus a presciptive model is one that can be used to construct the target system.[17]. DSLs always used prescriptive model as the term model, and the DDD is actually a equivalently descriptive modeling method.</p>
 <p>In model theory, a first-order theory is called model complete if every embedding of models is an elementary embedding. Equivalently, every first-order formula is equivalent to a universal formula[18]. We known that if a DSLs is Turing Completed, then, we can call it as GPL(General Purpose Language). The GPL is acturally a model companion of The Turing Machine.</p>
 <p>And when we said that a language <span class="math inline">\(l\)</span> covers a subset of <span class="math inline">\(P\)</span>, we can simply call this subset the <span class="math inline">\(domain\)</span> covered with <span class="math inline">\(l\)</span>. The subset of <span class="math inline">\(P\)</span> in that domain <span class="math inline">\(P_D\)</span> is equal to the subset of <span class="math inline">\(P\)</span> we can express with a language <span class="math inline">\(l\)</span> <span class="math inline">\(P_l\)</span>. So, we cannot ask a question like: “Does the language adequately cover the domain?”, <strong>since it always does, by definition</strong>.[17] And the definition can be also interept as that “<strong>DSL is always Model Complete, by definition</strong>”[17]</p>
 <h3 id="none-causal-modeling">2.2 None-Causal Modeling</h3>
-<p><strong>DL;DR: The Domain is leads to the question of how it works, but not how it looks like</strong></p>
 <p>There is two kind of languages for modeling a complex system: <strong>Causal (or block-oriented) languages</strong> and <strong>none-causal (or object-oriented) language</strong>.[12] The drawback of Causal Languages is: Needing to explicty specify the causality, which hampers modularity and reuse[19]. None-causal language is tried to solve the issue of cause language via allowing the user to avoid committing the model it self to a specific causality.[20]</p>
 <h3 id="csp-and-fhm">2.3 CSP and FHM</h3>
 <p>CSP (Communication Sequential Processes) is a typical None-Causal Language, for modeling the <code>Processes</code> of <code>Distributed System</code>, created by C.A.R Hoare, and still keeping update in nowadays(2015)[14]. It defined a process as this:</p>
@@ -89,7 +84,7 @@ figure 3.2[25]
 <h3 id="actor-model">3.2 Actor Model</h3>
 <p>Actor Model is an implementation of CSP (or lamport-timestamp based distributed FRP), invented by Carl Hewitt [24], which is also one of embers of 1970s AI wave (The second wave of AI). In Actor model, the model of processes of CSP are defined and structed with <code>Actor</code>, the actors can make local decisions, create more actors and send/response messages. The most famous implementation of Actor Model language is Erlang. Some people think golang’s goroutine or Python3’s coroutine are also implementation of CSP or Actor model, but actually they not, because of the mutable statement and memory sharing.</p>
 <p>In actor model, the <code>Actors</code> whose controlling the event loop is called <code>Arbiter</code>. Thus the <code>Actors</code> whose sharing the IO loop of <code>Arbiter</code> and controll other <code>Actors as Workers</code> is called <code>Monitor</code>. So a classic <code>Arbiter-Monitor</code>-<code>Actor</code> may like this:</p>
-<img src="https://ryankung.github.io/images/monitors.svg" />
+<img src="http://quantmind.github.io/pulsar/images/actors.svg" />
 <center>
 figure 3.3[25]
 </center>

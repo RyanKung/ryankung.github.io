@@ -7,10 +7,6 @@
 
 ## I Preface
 
-**TL;DR：The problem is a distributed problem, thus Microservices Architecture is Bullshit**
-
------
-
 
 
 Micro-Services was introducted by Peter Rodgers and Juval Löwy in 2005 [1,2,3]. The philosophy of it essentially equals to the Unix philosophy of "Do one thing and do it well". [4][5][6]:
@@ -33,10 +29,8 @@ Thus the "Unix Philosophy" of "Do one thing and do it well" is actually talking 
 ## II None-causal modeling
 
 
-**TL;DR: CPS is a none-causal language for processing modeling, and, Two Turing Award laureates thinks CSP (Actor model) is good for distributed system, and it's really so fucking good**
 
 ### 2.1 Think in the Domain
-**TR;TD: DSLs is a model complete method for solving problem**
 
 
 The most popular modeling method of micro-services nowadays is DDD (Domain-Driven Design), which trying to bind the model with the concrete implementation. The premise of the DDD is to make the modeling of the function or service be focus on the core domain and domain logic.[15][16]
@@ -48,7 +42,6 @@ In model theory, a first-order theory is called model complete if every embeddin
 And when we said that a language $l$ covers a subset of $P$, we can simply call this subset the $domain$ covered with $l$. The subset of $P$ in that domain $P_D$ is equal to the subset of $P$ we can express with a language $l$ $P_l$. So, we cannot ask a question like: "Does the language adequately cover the domain?", **since it always does, by definition**.[17] And the definition can be also interept as that "**DSL is always Model Complete, by definition**"[17]
 
 ### 2.2 None-Causal Modeling
-**DL;DR: The Domain is leads to the question of how it works, but not how it looks like**
 
 There is two kind of languages for modeling a complex system: **Causal (or block-oriented) languages** and **none-causal (or object-oriented) language**.[12] The drawback of Causal Languages is: Needing to explicty specify the causality, which hampers modularity and reuse[19]. None-causal language is tried to solve the issue of cause language via allowing the user to avoid committing the model it self to a specific causality.[20]
 
@@ -87,7 +80,7 @@ Actor Model is an implementation of CSP (or lamport-timestamp based distributed 
 
 In actor model, the `Actors` whose controlling the event loop is called `Arbiter`. Thus the `Actors` whose sharing the IO loop of `Arbiter` and controll other `Actors as Workers` is called `Monitor`. So a classic `Arbiter-Monitor`-`Actor` may like this:
 
-<img src="https://ryankung.github.io/images/monitors.svg" /><center>figure 3.3[25]</center>
+<img src="http://quantmind.github.io/pulsar/images/actors.svg" /><center>figure 3.3[25]</center>
 
 Thus the figure 3.2 should be represent as:
 
