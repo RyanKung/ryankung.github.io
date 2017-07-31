@@ -65,12 +65,12 @@ And the same two key ideas between CSP and FRP are to give first-class status to
 
 Lets recall that how people talk about the micro-services when they are talking about micro-services: Small, Testable, Robustness, Composable and Elastic. The graphic of the micro-services system should be like a vertex-edge map, all vertexs are symmetic thus they send messages to each orther for implement a complete function(figure 3.1). The vertex $S_i$ denotes the services, and the length $l$ of edgo of $(S_i, S_j)$ denotes the cost time between services $S_i,S_j$. With CSP modeling, the processing between $S_i,S_j)$ can be also present as $(S_j \rightarrow S_j)$.
 
-<img src="https://ryankung.github.io/images/fig_3_1.png" /><center>figure 3.1[25]</center>
+<center><img src="https://ryankung.github.io/images/fig_3_1.png" /></center><center>figure 3.1[25]</center>
 
 
 And some Services $S_i$ maybe multi-processes and should have it's workers like this.
 
-<img src="https://ryankung.github.io/images/fig_3_2.png" /><center>figure 3.2[25]</center>
+<center><img src="https://ryankung.github.io/images/fig_3_2.png" /></center><center>figure 3.2[25]</center>
 
 In Figure 3.2., Services $S_2$ have three workers $w_i; i\in[1,3]$. We can see that all vertexs are Isomorphism. 
 
@@ -80,11 +80,11 @@ Actor Model is an implementation of CSP (or lamport-timestamp based distributed 
 
 In actor model, the `Actors` whose controlling the event loop is called `Arbiter`. Thus the `Actors` whose sharing the IO loop of `Arbiter` and controll other `Actors as Workers` is called `Monitor`. So a classic `Arbiter-Monitor`-`Actor` may like this:
 
-<img src="http://quantmind.github.io/pulsar/images/actors.svg" /><center>figure 3.3[25]</center>
+<center><img src="http://quantmind.github.io/pulsar/images/actors.svg" /></center><center>figure 3.3[25]</center>
 
 Thus the figure 3.2 should be represent as:
 
-<img src="https://ryankung.github.io/images/fig_3_4.png" /><center>figure 3.4[25]</center>
+<center><img src="https://ryankung.github.io/images/fig_3_4.png" /></center><center>figure 3.4[25]</center>
 
 The Arbiter Actor here is actually a implementation of the vertex-edge map we descripted in Ch. 3.1. In real-world of enginering, the Arbiter maybe implement by Operator System itself, the VM, or just based on the network.
 
