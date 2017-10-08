@@ -20,7 +20,7 @@ Micro-Services was introducted by Peter Rodgers and Juval Löwy in 2005 [1,2,3].
 
 * Each service is elastic, resilient, composable, minimal, and complete.[6]
 
-And as Leslie Lamport's defination of distributed which in given in 2000, the micro-services architecture should always be a distributed system. In the viewpoint, a network of interconnected computers is a distributed system, and a single computer can be also be viewed as a distributed system in which the central control unit, the menory unit, and the input-output channels are sparate process. *A system is distributed is the message transmision delay is not negligible compared to the time between events in a single process*.[9]
+And as Leslie Lamport's defination of distributed which in given in 2000, the micro-services architecture should always be a distributed system. In the viewpoint, a network of interconnected computers is a distributed system, and a single computer can be also be viewed as a distributed system in which the central control unit, the memory unit, and the input-output channels are sparate process. *A system is distributed is the message transmision delay is not negligible compared to the time between events in a single process*.[9]
 
 In the fact, Addressing to the granularity of services, the realworld usecase of microservices architecture is usually either a distributed system or based on a distributed system such as some raft or paxos implementation like etcd[9], consul[10] and zookeeper[11].
 
