@@ -36,6 +36,10 @@ main = hakyll $ do
         route   idRoute
         compile compressCssCompiler
 
+    match "pdfs/*" $ do
+        route   idRoute
+        compile copyFileCompiler
+
     match (fromList ["about.md", "contact.markdown"]) $ do
         route   $ setExtension "html"
         compile $ pandocMathCompiler
