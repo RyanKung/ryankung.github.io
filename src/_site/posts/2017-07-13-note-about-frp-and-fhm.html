@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Ryan's Cave - 2017-07-13-note-about-frp-and-fhm</title>
+        <script type="text/javascript" src="../js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML-full,Safe"></script>
+        <script type="text/javascript" src="https://unpkg.com/pdfjs-dist@2.0.489/build/pdf.min.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/pdfjs-dist@2.0.489/build/pdf.worker.min.js"></script>
+        <link rel="stylesheet" href="../css/default.css" />
+        <link rel="stylesheet" href="../css/github.css" />
+    </head>
+    <body>
+        <div id="header">
+            <div id="logo">
+                <a href="../">Ryan's Cave</a>
+            </div>
+            <div id="navigation">
+                <a href="../">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../contact.html">Contact</a>
+                <a href="../archive.html">Archive</a>
+            </div>
+        </div>
+
+        <div id="content">
+            <div class="info">
+    Posted on July 13, 2017
+    
+</div>
+
+<h1>
+<center>
+Note about FRP and FHM
+</center>
+</h1>
+<center>
+<strong>Ryan J. Kung</strong>
+</center>
+<center>
+<strong>ryankung(at)ieee.org</strong>
+</center>
+<h2 id="i-functional-hybrid-modeling">I Functional hybrid modeling</h2>
+<h3 id="causal-and-none-causal-languages">1.1 causal and none-causal languages</h3>
+<p>Special <em>modeling languages</em> have been developed to facilitate modeling and simulation. There are two broad language categories in this domain.</p>
+<p><strong>Causal (or block-oriented) languages</strong> and <strong>none-causal (or object-oriented) language</strong>.</p>
+<p>In causal modeling, the equations that represent the physics of system must be written so that the direction of singal flow, in <span class="math inline">\(causality\)</span>, is explicit.</p>
+<p><em>E.g:</em></p>
+<ul>
+<li><a href="https://www.mathworks.com/products/simulink.html">Simulink (Mathlab)</a>[2]</li>
+<li><p><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/">Ptolemy II</a>[3]</p>
+<p>Ptolemy II is an open-source software framework supporting experimentation with <strong>actor-oriented design</strong>. [4]</p></li>
+</ul>
+<p>“In Non-causal language, the equations taht focuses on the interconnection of the components of system being modeled, from which causality is then inferred.”</p>
+<p><em>E.g:</em></p>
+<ul>
+<li><a href="https://www.mathworks.com/products/connections/product_detail/product_35341.html">Dymola (Mathlab)</a>[5]</li>
+<li>Modelica[6]</li>
+</ul>
+<h4 id="drawbacks">1.1.1 Drawbacks:</h4>
+<ul>
+<li><p>causal languages: Needing to explicity specify the causality. This hampers modularity and reuse[7].</p></li>
+<li><p>none-causal languages: Trid to solve the issue of cause languages via loowing the user to avoid committing the model itself to a specific causality. But current non-causal modeling languages sacifice generality, particularly when it comes to hybrid modeling.</p></li>
+<li><p>Additional weaknesses: Language safety disciplines are uncommon.</p></li>
+</ul>
+<h3 id="functional-reactive-programming">1.2 Functional reactive programming</h3>
+<p>In research of Yale, they has developed a framework called <em>functional rective programming</em>, or FRP[8]. which is highly suited fro causal hybird modeling[9]. And, because the full power of a functional language is avaliable, it exhibits a high degree of modularity, allowing reuse of components and design patterns.[10]</p>
+<h3 id="functional-hybrid-modeling">1.3 Functional hybrid modeling</h3>
+<p><em>functional hybird modeling</em>, or FHM is a combined of FRP and none-causal languages. Which can be seen as a generalization of FRP, since FRP’s functions on singals are a special case of FHM’s relations on signals. FHM, like FRP, also allows the description of structurally dynamic models.[11]</p>
+<h2 id="ii-integrating-functional-programming-and-non-causal-modeling12">II Integrating Functional Programming and Non-Causal Modeling[12]</h2>
+<p><em>The two key idea are to give first -class status to relations on signals and to provide constructs for discrete switch ing between relations.</em></p>
+<h3 id="first-class-signal-relations">2.1 First-Class Signal Relations</h3>
+<p>A <em>signal</em> is, conceptually, a function of time. A <em>signal function</em> maps a stimulating singal onto a responding signal. A natual mathematical description of a continuous signal function is ahta of an ODE(ordinary differential equation) in explict form.</p>
+<p>A <em>function</em> is just a special case of the more general concept of a <em>relation</em>. While functions usually are given a causal interpretation, relations are inherently non-causal. DAEs(differential and algebraic equations) wre at the heaart of none-causal modeling. It’s natureal to view ODE in explict form can be seen as a causal signal function.</p>
+<p>A non-causal model is an implicit system of DAE: <span class="math inline">\(f(x, x',w,u,t)=0\)</span>,where <span class="math inline">\(x\)</span> is a vector of state variables, <span class="math inline">\(w\)</span> as a vector of algebraic variables, <span class="math inline">\(u\)</span> is a vector of inputs, and <span class="math inline">\(t\)</span> is the time.</p>
+<p>Conceptualy, we define the polymorphic type of signal as <span class="math inline">\(S\ \alpha = Time \rightarrow \alpha\)</span>; that is, <span class="math inline">\(S\ \alpha\)</span> is the type of a signal whose instantaneous value is of type <span class="math inline">\(\alpha\)</span>(parameteric type).</p>
+<h2 id="reference">Reference</h2>
+<p>[1] [Andrew Kennedy. Programming Languages and Dimensions. PhdD thesis, University of Cambridge, Computer Laboratory, April 1996. Published as Technical Port No. 391.](https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-391.pdf)</p>
+<p>[2] Simulink: https://www.mathworks.com/products/simulink.html</p>
+<p>[3][4] Ptolemy Project: Ptolemy II http://ptolemy.eecs.berkeley.edu/ptolemyII/</p>
+<p>[5] Dynamic Modeling Laboratory https://www.mathworks.com/products/connections/product_detail/product_35341.html</p>
+<p>[6] Modelica https://www.modelica.org/</p>
+<p>[7] Frannois E. Cellier. Object-oriented modelling: Means of dealing with system complexity. In Proceeedings of the 15th Benelur Meeting on Systems and Control, Mierlo, The Netherland, pages 53-64, 1006 cited in Functional Hybird Modeling, Henrik Nilsson, John Peterson, and Paul Hudak, Department of Computer Science, Yale University, PADL 2003</p>
+<p>[8] Zhanyong Wan and Paul Hudak. Functional reactive programming from first princple. In proceeding s of PLDI’01: Symposium on Programming Language Design and Implementation, pages 202-202, June 2000.</p>
+<p>[9][10][11] Henrik Nilsson, John Peterson, and Paul Hudak, Functional Hybird Modeling, Department of Computer Science, Yale University, PADL 2003</p>
+<p>[12][13] Henrik Nilsson, John Peterson, and Paul Hudak, Functional Hybird Modeling, Department of Computer Science, Yale University, PADL 2003</p>
+
+        </div>
+
+        <div id="footer">
+            Site proudly generated by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        </div>
+    </body>
+</html>

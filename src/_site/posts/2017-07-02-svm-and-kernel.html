@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Ryan's Cave - 2017-07-02-svm-and-kernel</title>
+        <script type="text/javascript" src="../js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML-full,Safe"></script>
+        <script type="text/javascript" src="https://unpkg.com/pdfjs-dist@2.0.489/build/pdf.min.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/pdfjs-dist@2.0.489/build/pdf.worker.min.js"></script>
+        <link rel="stylesheet" href="../css/default.css" />
+        <link rel="stylesheet" href="../css/github.css" />
+    </head>
+    <body>
+        <div id="header">
+            <div id="logo">
+                <a href="../">Ryan's Cave</a>
+            </div>
+            <div id="navigation">
+                <a href="../">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../contact.html">Contact</a>
+                <a href="../archive.html">Archive</a>
+            </div>
+        </div>
+
+        <div id="content">
+            <div class="info">
+    Posted on July  2, 2017
+    
+</div>
+
+<h1>
+<center>
+SVM and Kernels
+</center>
+</h1>
+<center>
+<h4>
+Ryan J. Kung
+</h4>
+</center>
+<center>
+<h4>
+ryankung(at)ieee.org
+<h4>
+</center>
+<h2 id="svm">SVM</h2>
+<ul>
+<li>Logistic Regression:</li>
+</ul>
+<span class="math display">\[\begin{align*}
+J(\theta) &amp;= -\underset{\theta}{min} \frac{1}{m} \displaystyle \sum_{i=1}^m [y^{(i)}\log (h_\theta (x^{(i)})) + (1 - y^{(i)})\log (1 - h_\theta(x^{(i)}))]+ \frac{\lambda}{2m}\sum_{j=1}^n \theta_j^2\\
+&amp;= \underset{\theta}{min}\frac{1}{m} \displaystyle \sum_{i=1}^m [y^{(i)}-\log (h_\theta (x^{(i)})) + (1 - y^{(i)})(-\log (1 - h_\theta(x^{(i)})))]+ \frac{\lambda}{2m}\sum_{j=1}^n \theta_j^2
+\end{align*}\]</span>
+<ul>
+<li>Support Vector Machine
+<span class="math display">\[\begin{align*}
+&amp;= \underset{\theta}{min}\frac{1}{m} \sum_{i=1}^m [y^{(i)}cost_1(\theta^Tx^{(i)})) + (1 - y^{(i)})cost_2(\theta^Tx^{(i)}))]+ \frac{\lambda}{2m}\sum_{j=1}^n \theta_j^2\\
+&amp;= \underset{\theta}{min} \sum_{i=1}^m [y^{(i)}cost_1(\theta^Tx^{(i)})) + (1 - y^{(i)})cost_2(\theta^Tx^{(i)}))]+ \frac{\lambda}{2}\sum_{j=1}^n \theta_j^2\\
+&amp;= \underset{\theta}{min}C \sum_{i=1}^m [y^{(i)}cost_1(\theta^Tx^{(i)})) + (1 - y^{(i)})cost_2(\theta^Tx^{(i)}))]+ \frac{1}{2}\sum_{j=1}^n \theta_j^2 \ ;\ for\ C=\frac{1}{\lambda}\\
+\end{align*}\]</span></li>
+<li>SVM Hypothesis:
+<span class="math display">\[\begin{align*}
+h_{\theta}=\left\{
+\begin{array}{0r}
+1\ if\ \theta^Tx \geq 0\\
+0\ otherwise
+\end{array}
+\right\}
+\end{align*}\]</span></li>
+<li>Training Process:</li>
+</ul>
+<p>if <span class="math inline">\(y=1\)</span>, we want <span class="math inline">\(\theta^Tx\geq1\)</span></p>
+<p>if <span class="math inline">\(y=0\)</span>, we want <span class="math inline">\(\theta^Tx\leq-1\)</span></p>
+<p><em>This builds in an <strong>extra safety factor or safety margin factor</strong> into the support vector machine</em></p>
+<h2 id="kernels">Kernels</h2>
+<p>Q: Is there a different / better choice of features <span class="math inline">\(f_1, f_2, f_3 ...\)</span>?</p>
+<p>S: Given <span class="math inline">\(x\)</span>, compute new feature depending on proximity to landmarks <span class="math inline">\(l^{(1)}, l^{(2)}, l^{(3}\)</span></p>
+<span class="math display">\[\begin{align*}
+f_i=similarity(x, l^{(i)})=exp(-\frac{||x-l^{(1)}||^2}{2\sigma^2})
+\end{align*}\]</span>
+<p>The mathematical term of the similarity function is <strong>kernel</strong> function, the specific kernel above is acutually called a <em>Gaussian Kernel</em>.</p>
+<span class="math display">\[\begin{align*}
+f_i=K(x, l^{(i)})=exp(-\frac{||x-l^{(1)}||^2}{2\sigma^2})
+\end{align*}\]</span>
+<p>If <span class="math inline">\(x \approx l^{(i)}\)</span>:</p>
+<span class="math display">\[\begin{align*}
+f_i \approx exp(-\frac{0^2}{2\sigma^2})\approx 1 
+\end{align*}\]</span>
+<p>If <span class="math inline">\(x\)</span> far from <span class="math inline">\(l^{(i)}\)</span>:</p>
+<span class="math display">\[\begin{align*}
+f_i=exp(-\frac{large\ number^2}{2\sigma^2})\approx 0
+\end{align*}\]</span>
+<h3 id="svm-with-kernels">SVM with Kernels:</h3>
+<p>Given <span class="math inline">\((x^{(1)}, y^{(1)}), (x^{(2)}, y^{(2)}),..,(x^{(m)}, y^{(m)})\)</span></p>
+<p>Choose <span class="math inline">\((l^{(1)}, l^{(1)}), (l^{(2)}, l^{(2)}),..,(l^{(m)}, l^{(m)})\)</span></p>
+<p>Given example <span class="math inline">\(x\)</span>: <span class="math inline">\(f_i=K(x,l^{(i)})\)</span></p>
+<span class="math display">\[\begin{align*}
+x^{(i)}\rightarrow \begin{bmatrix}f_1^{(i)} \newline f_2^{(i)} \newline \vdots \newline f_m^{(i)}\end{bmatrix}
+\end{align*}\]</span>
+<p>Hypothesis: Given <span class="math inline">\(x\)</span>, compute fetures <span class="math inline">\(f\in \mathbb{R}^{m+1}\)</span>, Predict “y=1” if <span class="math inline">\(\theta^Tf\geq0\)</span></p>
+Training:
+<span class="math display">\[\begin{align*}
+\underset{\theta}{min}C \sum_{i=1}^m [y^{(i)}cost_1(\theta^Tf^{(i)})) + (1 - y^{(i)})cost_2(\theta^Tf^{(i)}))]+ \frac{1}{2}\sum_{j=1}^{n=m} \theta_j^2
+\end{align*}\]</span>
+<p>Note that: <span class="math inline">\(=\sum_{j=1}^{n=m} \theta_j^2=\theta^T\theta=||\theta||^2\)</span> if we ignore <span class="math inline">\(\theta_0\)</span></p>
+<p>SVM parameters:</p>
+<p><span class="math inline">\(C(=\frac{1}{\lambda})\)</span></p>
+<ul>
+<li><p>Large C: Lower bias, high variance,</p></li>
+<li><p>Small C: Higher bias, low variance.</p></li>
+</ul>
+<p><span class="math inline">\(\sigma^2\)</span></p>
+<ul>
+<li><p>Large <span class="math inline">\(\sigma^2\)</span>: Feature <span class="math inline">\(f_i\)</span>, vary more smoothly. Higher bias, lower variance.</p></li>
+<li><p>Small <span class="math inline">\(\sigma^2\)</span>: Feature <span class="math inline">\(f_2\)</span>, vary less smoothly. Lower bias, Higher variance.</p></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"></code></pre></div>
+
+        </div>
+
+        <div id="footer">
+            Site proudly generated by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        </div>
+    </body>
+</html>
