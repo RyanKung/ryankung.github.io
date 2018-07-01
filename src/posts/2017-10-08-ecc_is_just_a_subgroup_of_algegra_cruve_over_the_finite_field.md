@@ -11,7 +11,6 @@ loadingTask.promise.then(function(pdf) {
   var pageNumber = 1;
   pdf.getPage(pageNumber).then(function(page) {
     console.log('Page loaded');
-    
     var scale = 1.5;
     var viewport = page.getViewport(scale);
 
