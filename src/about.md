@@ -16,8 +16,9 @@
 
 * 2011-2013 Full-Stack Engineer of Douban Ltd.
 * 2013-2014 Data Scientist of ImayGou Ltd.
+* 2013-2015 Chief Software of OpenEx@ASICMiner.
 * 2016-2017 Software Architect of Xunlei (XNET) Ltd.
-* 2017- ------  Software Architect of Bixin Ltd.
+* 2017- ------  Chief Software Architect of Bixin Ltd., General Leader of Bixin Ltd. SZ Branch
 
 ## Skill Keywords
 
@@ -30,6 +31,10 @@
 	
 ## Works & Projects
 
+* **Klefki**,  Klefki is a playground for researching elliptic curve group based cryptocoins, such as Bitcoin and Ethereum. All data types & structures are based on mathematical defination of abstract algebra.
+
+* **ExchangeableToken**,  A extension for Ethereum based tokens, which added an build-in exchange. 
+
 * **AlphaTown**, A 2D Virtual Social Network</br>
 	www.alphatown.com
 
@@ -37,8 +42,6 @@
 	
 * **CardKit**,  A mobile UI framework to help you build mobile web apps quickly and simply, or transfer entire website to native-like web app for touch devices
 
-* **flymake-mypy**, A missing elisp module for *Emacs* which Use `mypy` as flymake backend for type checking.
-	
 * **Stack / Stack-cli**, A missing The Tool stack for Python
 
 * **pWsgi**, pWSGI is a WSGI wrapper with pulsar. It can easily map a wsgi app (such as Flask app or djang app) to a pulsar wsgi app with full features supporting by pulsar.
@@ -48,8 +51,6 @@
 * **fn-compose**,  Make python support function compostion with matrix_mul operator 
 
 * **shadowsocks4blackberry**, Ported shadowsocks-libev to blackberry QNX OS.
-
-* **Pomodoro**,  Simple implementation for Pomodoro Technique 
 
 ## Contributed
 * **Tensorflow** -- Computation using data flow graphs for scalable machine learning
