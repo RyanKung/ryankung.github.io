@@ -22,7 +22,7 @@
 
 ## Skill Keywords
 
-`Python` `EcmaScript` `Clojure` `Scheme` `Racket` `Haskell` `FP` `FRP` `PLT` `Distributed System` `BlockChain` `Machine Learning` 
+`Python` `EcmaScript` `Clojure` `Scheme` `Racket` `Haskell` `FP` `FRP` `PLT` `Distributed System` `BlockChain` `Machine Learning`  `Rust`
 
 ## Publication
 
