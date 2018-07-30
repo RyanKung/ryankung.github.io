@@ -16,7 +16,7 @@
 
 * 2011-2013 Full-Stack Engineer of Douban Ltd.
 * 2013-2014 Data Scientist of ImayGou Ltd.
-* 2013-2015 Chief Software of OpenEx@ASICMiner.
+* 2013-2015 Chief Software Architect of OpenEx@ASICMiner.
 * 2016-2017 Software Architect of Xunlei (XNET) Ltd.
 * 2017- ------  Chief Software Architect of Bixin Ltd., General Leader of Bixin Ltd. SZ Branch
 
