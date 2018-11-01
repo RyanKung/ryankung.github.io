@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Ryan's Cave - 2017-06-11-multi-layer-neural-networks</title>
+        <script type="text/javascript" src="../js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML-full,Safe"></script>
+        <script type="text/javascript" src="https://unpkg.com/pdfjs-dist@2.0.489/build/pdf.min.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/pdfjs-dist@2.0.489/build/pdf.worker.min.js"></script>
+        <link rel="stylesheet" href="../css/default.css" />
+        <link rel="stylesheet" href="../css/github.css" />
+    </head>
+    <body>
+        <div id="header">
+            <div id="logo">
+                <a href="../">Ryan's Cave</a>
+            </div>
+            <div id="navigation">
+                <a href="../">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../contact.html">Contact</a>
+                <a href="../archive.html">Archive</a>
+            </div>
+        </div>
+
+        <div id="content">
+            <div class="info">
+    Posted on June 11, 2017
+    
+</div>
+
+<h1>
+<center>
+Multi-Layer Neural Networks
+</center>
+</h1>
+<center>
+<strong>Ryan J. Kung</strong>
+</center>
+<center>
+<strong>ryankung(at)ieee.org</strong>
+</center>
+<h3 id="deep-feedforward-networks">Deep Feedforward Networks</h3>
+<p><span class="math inline">\(Deep\  feedforward\ networks\)</span>, also often called <span class="math inline">\(feedforward \ neural \ network\)</span>, or <span class="math inline">\(multilayer\ percptrons\)</span>(<span class="math inline">\(MLPs\)</span>), are the quientessential deep learning models.</p>
+<p><strong>Goal:</strong> Approximate some function <span class="math inline">\(f*\)</span>. in classifier case, <span class="math inline">\(f^*(x)\)</span> maps an input <span class="math inline">\(x\)</span> to a category <span class="math inline">\(y\)</span>, It defaines a mapping <span class="math inline">\(y=f(x;\theta)\)</span> and learns the value of the parameters(weight) <span class="math inline">\(\theta\)</span> that result in best function approximation.</p>
+<ul>
+<li>Forward Propagation:</li>
+</ul>
+<p>information flows through the function being evalutied from <span class="math inline">\(x\)</span>, through the intermediate computations used to define <span class="math inline">\(f\)</span>, and finally to the output <span class="math inline">\(y\)</span>. <strong>There are no <span class="math inline">\(feedback\)</span> connections in which outputs of model are fed back to it self</strong>.</p>
+<ul>
+<li>Network</li>
+</ul>
+<p>Represented by composing together many different functions. The model is associated with a directed <strong>acyclic graph</strong> describing how functions are compose together.</p>
+<p>We meight have functions <span class="math inline">\(f^{(1)}(x),f^{(2)}(x),..,f^{(n)}(x)\)</span>, connected in a chain, wich can form as <span class="math inline">\(f^{(1)}\circ f^{(2)}\circ..f^{(n)}(x)\)</span>, the overall length of layers is is called <span class="math inline">\(depth\)</span> of model.</p>
+<p>During the processing of neural networking training, we drive <span class="math inline">\(f(x;\theta)\)</span> to match <span class="math inline">\(f^*(x)\)</span> via produce a valure <span class="math inline">\(\theta\)</span> which make <span class="math inline">\(y \approx f(x;\theta)\approx f^*(x)\)</span></p>
+<p><strong>Idea:</strong> Choose <span class="math inline">\(\theta\)</span> so that <span class="math inline">\(Hypothesis\ Function\)</span> <span class="math inline">\(\phi\)</span> is close to <span class="math inline">\(y\)</span>, (<span class="math inline">\(\phi\)</span> is denoted as <span class="math inline">\(h_{\theta}\)</span> in Andrew Ng’s Course.).</p>
+<h3 id="gradient-based-learning">Gradient-Based Learning</h3>
+<p>The most difference between others linear models and neural network is that the <em>nonlinearity</em> of neural network causes most interesting loos functions to become <strong>non-convex</strong>.</p>
+<p>Which is means that: <em>Stochastic gradient descent applied to <strong>non-convex</strong> loose function has <strong>no convergence guarantiee</strong>, And it’s <strong>sensitive</strong> to the values of the <strong>intial parameters</strong>.</em></p>
+<p>So, It is important to initialize all weights to small random values, and the bias may be initialized to zero or to small positive values.</p>
+<h3 id="cost-function">Cost Function</h3>
+<p>In most cases, our parametric model defines a distribution <span class="math inline">\(p(y | y;\theta)\)</span> and we can simply using the principle of <span class="math inline">\(maximum\ likihood\)</span>.</p>
+<p>Most modern neural networks are trained using <span class="math inline">\(maximum\ likelihood\)</span>. The <span class="math inline">\(maximum\ likelihood\)</span> is equivaliently describeed as the <span class="math inline">\(corss-entropy\)</span> between the training data and the model distribution.</p>
+<p>The cost function is given by:</p>
+<span class="math display">\[\begin{equation}
+J(\theta)=- \mathbb{E}_{x,y~\hat{p}data}logP_{model}(y|x)
+\end{equation}\]</span>
+<p>For the case we using <span class="math inline">\(MSE\)</span> as cost function:</p>
+<span class="math display">\[\begin{equation}
+J(\theta)=\frac{1}{2}\mathbb{E}_{x,y~\hat{p}data}||y-f(x;\theta)||^2+const
+\end{equation}\]</span>
+<p>An adventange of using MLE as cost function is that it removes the burden of designing cost function for each model and for a speciy model <span class="math inline">\(p(y | x)\)</span>, it automatically through out a cost funtion <span class="math inline">\(log p(y|x)\)</span>.</p>
+<h3 id="output-units3">Output Units[3]</h3>
+<p>The choice of cost function is tightly coupled with the choice of output unit. Most of time, we simply use cross-entropy between the data distribution and the model destribution. Any kind of neural network unit that may be used as an output unit can also be used as <em>hidden unit</em>.</p>
+<p>We suppose that the feedforwad network provide a set of hidden features defined by <span class="math inline">\(h=f(x;\theta)\)</span></p>
+<ul>
+<li>Linear units for Gaussian Output Distribution</li>
+</ul>
+<p>A simple kind of output unit is based on an <span class="math inline">\(affine\ transformation\)</span> with <strong>no nonlineary</strong> which is often just called as linear units.</p>
+<p>Given features <span class="math inline">\(h\)</span>, a layer of linear output units producs a vector <span class="math inline">\(\hat{y}=W^T+b\)</span>, It often used to produce the mean of a conditional Gaussian distribution <span class="math inline">\(p(y\ |x) = \mathcal{H}(y;\hat{y}, I)\)</span></p>
+<p>And <strong>Maximizing the log-likelihood</strong> is equivalent to <em>minimizing</em> the <strong>Mean Squred error</strong>.</p>
+<ul>
+<li>Sigmoid Units for Bernoulli Output Distributions</li>
+</ul>
+<p>if a task is a binary classification problem, the maximum-likelihood approach is to define a <span class="math inline">\(Bernoulli \ distribution\)</span> over <span class="math inline">\(y\)</span> conditioned on <span class="math inline">\(x\)</span>.</p>
+<p>A <span class="math inline">\(Bernoulli\ distribution\)</span> is difined by just single number. The ANN needs to prodict only <span class="math inline">\(P(y=1|x)\)</span>.</p>
+<ul>
+<li>Softmax Units for Multinoulli Ouput Distribution</li>
+</ul>
+<p>Any time we wish to represent a probability distribution over a discrete variable with <span class="math inline">\(n\)</span> possible values, we may use the <span class="math inline">\(softmax\)</span> function. This can be seen as a generalization of the sigmoid function which was used to represent a probability distribution over a binary variable.</p>
+<h3 id="hidden-units">Hidden Units</h3>
+<p>Note That: <em>The design of hidden units is an extremely active area of research and dose no yet have many definitive guiding theoretical principles.</em></p>
+<p><strong>Rectified linear units (ReLU)</strong> is an extremely default choice of hidden unit.</p>
+<h3 id="architecture-design">Architecture Design</h3>
+<p>Most neural networks are organized into groups of units called layers, cant arrange them in chain structure.</p>
+<p>The first Layer is given by:</p>
+<span class="math display">\[\begin{equation}
+h^{(1)}=g^{(1)}(W^{(1)T}x+b^{(1)}
+\end{equation}\]</span>
+And the second is given by:
+<span class="math display">\[\begin{equation}
+h^{(2)}=g^{(2)}(W^{(2)T}h^{(1)}+b^{(2)}
+\end{equation}\]</span>
+<p>In chain-based architectures, the main architecture considerations are to choose the depth of the network and the width of each layer.</p>
+<p>Deeper networks often are able to use far fewer units per layer and parameters, and often generlize to the test set, but are also harder to optimized.</p>
+<h3 id="back-propagation">Back-Propagation</h3>
+<p>The <span class="math inline">\(back-propagation\ algorithm\)</span>, open simply called backprop, allows the information from the cost to then flow backwards through the network, in order to compute the gradient.</p>
+<p>The term <em>back-propagation</em> is often misunderstood as meaning the whole learning algorithm for multi-layer neural networks. Acutually, back-propagation refers only to the method for computing the gradient, while other algorithm, such as stochastic gradient decent, is used to perform learning using this gradient.</p>
+<p>Futhermore, back-propagation is foten misunderstood as being specific to multilayer neural networks, but in principle, it can compute derivations of any function.</p>
+<p>We will discribe how to compute the gradient <span class="math inline">\(\Delta_xf(x,y)\)</span> for an arbitrary function <span class="math inline">\(f\)</span>, where x is a set of variable whose derviatives are desired, and <span class="math inline">\(y\)</span> is an additional set of variable that are inputs to the function whose derivations are not required.</p>
+<h4 id="chain-rule-of-calculus">Chain Rule of Calculus</h4>
+<p>Suppose that:</p>
+<span class="math display">\[\begin{equation}
+x\in \mathbb{R}\\
+y=g(x)\ and\ z=f(g(x))=f(y)
+\end{equation}\]</span>
+then the chain rule states that
+<span class="math display">\[\begin{equation}
+\frac{\partial{z}}{\partial{x_i}} =\frac{\partial{z}}{\partial{y_i}}\frac{\partial{y_j}}{\partial{x_i}}
+\end{equation}\]</span>
+<p>We gan gerneralize this beyound the scalar case.</p>
+Suppose that:
+<span class="math display">\[\begin{equation}
+x\in \mathbb{R}^m, y\in \mathbb{R}^n,\ g::\mathbb{R}^m \rightarrow \mathbb{R}^n
+\end{equation}\]</span>
+and
+<span class="math display">\[\begin{equation}
+f :: \mathbb{R}^n \rightarrow \mathbb{R}^m
+\end{equation}\]</span>
+if
+<span class="math display">\[\begin{equation}
+y=g(x)\ and\ z=f(y)
+\end{equation}\]</span>
+then:
+<span class="math display">\[\begin{equation}
+\frac{\partial{z}}{\partial{x_i}} = \sum_j{\frac{\partial{z}}{\partial{y_i}}\frac{\partial{y_j}}{\partial{x_i}}}
+\end{equation}\]</span>
+In vector natation[5], this may be equivalently written as:
+<span class="math display">\[\begin{equation}
+\nabla_xz=\left(\frac{\partial{y}}{\partial{x}}\right)^T\nabla_yz
+\end{equation}\]</span>
+<p>Where <span class="math inline">\(\frac{\partial{y}}{\partial{z}}\)</span> is the <span class="math inline">\(n \times m\)</span> Jacobian matrix[4] of <span class="math inline">\(g\)</span>.</p>
+<p>From this, we see that the gradient of a variable <span class="math inline">\(x\)</span> can be obetained by multiplying a Jacobian matrix <span class="math inline">\(\frac{\partial{y}}{\partial{x}}\)</span> by a gradient <span class="math inline">\(\nabla_y z_1\)</span>, the back-proagation algorithm consists of performing such a jacobian-gradient product for each operation in the graph[6].</p>
+<p>We use <span class="math inline">\(\nabla_{\textbf{X}}z\)</span> to denote the gradient of a value <span class="math inline">\(z\)</span> with tensor <span class="math inline">\(\textbf{X}\)</span>. if <span class="math inline">\(\textbf{Y}=g(\textbf{X})\)</span>, and <span class="math inline">\(z=f(\textbf{Y})\)</span>, then:</p>
+<span class="math display">\[\begin{equation}
+\nabla_{\textbf{X}}z=\sum_j{(\nabla_{\textbf{X}}\textbf{Y}_j)\frac{\partial{z}}{\partial{\textbf{Y}_j}}}
+\end{equation}\]</span>
+<h2 id="reference">Reference:</h2>
+<p>[1][6] Book Deep Learning, Author Ian Gooodfellow and Yoshua Bengio and Aaron Courville, MIT Press</p>
+<p>[2] Machine Learning Course, Andrew Ng. https://www.coursera.org/learn/machine-learning/</p>
+<p>[3] Book Deep Learning, Author Ian Gooodfellow and Yoshua Bengio and Aaron Courville, MIT Press, page 190</p>
+<p>[4] Jacobian Matrix https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant</p>
+<p>[5] Vector notation https://en.wikipedia.org/wiki/Vector_notation</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"></code></pre></div>
+
+        </div>
+
+        <div id="footer">
+            Site proudly generated by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        </div>
+    </body>
+</html>

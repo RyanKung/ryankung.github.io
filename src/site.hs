@@ -12,8 +12,6 @@ import           Text.Pandoc.Options
 
 --------------------------------------------------------------------------------
 
-
-
 pandocMathCompiler =
     let mathExtensions = [Ext_tex_math_dollars, Ext_tex_math_double_backslash,
                           Ext_latex_macros]

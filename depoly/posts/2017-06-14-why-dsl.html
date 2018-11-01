@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Ryan's Cave - 2017-06-14-why-dsl</title>
+        <script type="text/javascript" src="../js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML-full,Safe"></script>
+        <script type="text/javascript" src="https://unpkg.com/pdfjs-dist@2.0.489/build/pdf.min.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/pdfjs-dist@2.0.489/build/pdf.worker.min.js"></script>
+        <link rel="stylesheet" href="../css/default.css" />
+        <link rel="stylesheet" href="../css/github.css" />
+    </head>
+    <body>
+        <div id="header">
+            <div id="logo">
+                <a href="../">Ryan's Cave</a>
+            </div>
+            <div id="navigation">
+                <a href="../">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../contact.html">Contact</a>
+                <a href="../archive.html">Archive</a>
+            </div>
+        </div>
+
+        <div id="content">
+            <div class="info">
+    Posted on June 14, 2017
+    
+</div>
+
+<h1>
+<center>
+Why DSL
+</center>
+</h1>
+<center>
+<strong>Ryan J. Kung</strong>
+</center>
+<center>
+<strong>ryankung(at)ieee.org</strong>
+</center>
+<h2 id="conclusion">Conclusion</h2>
+<p>We perfer to use DSLs is addressing that in <em>model complete therory</em> and <em>definition of DSLs</em>, it is a more concrete and direct way for doing modeling better, because <span class="math inline">\(iff\)</span> a model <span class="math inline">\(M\)</span> is model complete, it is equalize to the <span class="math inline">\(DSL\)</span> of that Model.</p>
+<h2 id="dsl">DSL</h2>
+<p>There are two main schools of DSLs: <span class="math inline">\(internal\)</span> and <span class="math inline">\(external\)</span> DSLs[1]. The <span class="math inline">\(concrete\ syntax\)</span> defines the notation with wihich users can express programs.</p>
+<p>A DSL or GPL may include follow ingredients[2]:</p>
+<ul>
+<li><p><span class="math inline">\(abstract\ syntax\)</span></p>
+<p>which is a data structure that can hold the semantically relevant information express by a program.</p></li>
+<li><p><span class="math inline">\(static\ semantics\)</span></p>
+<p>Which Of language are the set of constraints and/or type system rules to which programs have to conform.</p></li>
+<li><p><span class="math inline">\(Excution Semantics\)</span></p>
+<p>Which refers to the meaning of a program once it is execuded. It is realized using the <span class="math inline">\(execution\ engine\)</span>.</p></li>
+</ul>
+<h2 id="modeling-and-model-complete">Modeling, and Model Complete</h2>
+<h3 id="modeling">Modeling</h3>
+<p>There are two ways in which the term modeling can be understood: <strong>descriptive</strong> and <strong>preciptive</strong>. A descriptive model represent an existing system Thus a presciptive model is one that can be used to construct the target system. In DSL engineering, we always mean <em>prescriptive</em> models when we use the term model[3].</p>
+<h3 id="model-complete">Model Complete</h3>
+<p>In model theory, a first-order theory is called model complete if every embedding of models is an elementary embedding. Equivalently, every first-order formula is equivalent to a universal formula[6].</p>
+<p>A <strong>companion</strong> of a theory <span class="math inline">\(T\)</span> is a theory <span class="math inline">\(T^*\)</span> such that every model of <span class="math inline">\(T\)</span> can be embedded in a model of <span class="math inline">\(T^*\)</span> and vice versa.</p>
+<p>A <strong>model companion</strong> of a theory <span class="math inline">\(T\)</span> is a companion of <span class="math inline">\(T\)</span> that is model complete. <span class="math inline">\(Robinson\)</span> proved that a theory has at most one model companion.</p>
+<p>A model completion for a theory <span class="math inline">\(T\)</span> is a model companion <span class="math inline">\(T^*\)</span> such that for any model <span class="math inline">\(M\)</span> of <span class="math inline">\(T\)</span>, the theory of <span class="math inline">\(T^*\)</span> together with the diagram of <span class="math inline">\(M\)</span> is complete. Roughly speaking, this means every model of <span class="math inline">\(T\)</span> is embeddable in a model of <span class="math inline">\(T^*\)</span> in a unique way.</p>
+<h3 id="gpl-and-turing-complete">GPL and Turing Complete</h3>
+<p>We known that the <strong>GPL</strong> is always <strong>Turing Complete</strong>. <strong>Turing Complete</strong> is means that a GPL it can be used to simulate any single-taped Turing machine. Turing Complete is actualy a preciptive model of <strong>Turing Machine</strong>.</p>
+<h3 id="domains-and-model-complete">Domains and Model complete</h3>
+<p>When we said that a language <span class="math inline">\(l\)</span> covers a subset of <span class="math inline">\(P\)</span>, we can simply call this subset the <span class="math inline">\(domain\)</span> covered with <span class="math inline">\(l\)</span>. The subset of <span class="math inline">\(P\)</span> in that domain <span class="math inline">\(P_D\)</span> is equal to the subset of <span class="math inline">\(P\)</span> we can express with a language <span class="math inline">\(l\)</span> <span class="math inline">\(P_l\)</span>. So, we cannot ask a question like: “Does the language adequately cover the domain?”, <strong>since it always does, by definition</strong>.[4] And the definition can be also interept as that “<strong>DSL is always model complete, by definition</strong>”</p>
+<h4 id="completeness">Completeness</h4>
+<p>A DSL might be eighter <strong>incomplete-DSL</strong> or <strong>complete-DSL</strong>, is determined by <strong>Completeless</strong> which is refers and only refers to the degree to which a language <span class="math inline">\(L\)</span> can express programs that contain all necessary information to execute them. An program express in an incomplete DSL requires additional specifications (such as configuation files or code written in a lower-level language) to make it executable.[5]</p>
+<h1 id="referance">Referance</h1>
+<p>[1][2][3]DSL Engineering, Designing, Implementing and Using Domain-Specific Languages, Markus Voelter, dslbook.org, ch 2.1</p>
+<p>[4]DSL Engineering, Designing, Implementing and Using Domain-Specific Languages, Markus Voelter, dslbook.org, ch 3.1</p>
+<p>[5]DSL Engineering, Designing, Implementing and Using Domain-Specific Languages, Markus Voelter, dslbook.org, ch 4.5</p>
+<p>[6] Chang, Chen Chung; Keisler, H. Jerome (1990) [1973], Model Theory, Studies in Logic and the Foundations of Mathematics (3rd ed.), Elsevier, ISBN 978-0-444-88054-3</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"></code></pre></div>
+
+        </div>
+
+        <div id="footer">
+            Site proudly generated by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        </div>
+    </body>
+</html>

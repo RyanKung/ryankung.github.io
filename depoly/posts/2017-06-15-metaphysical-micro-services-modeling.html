@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Ryan's Cave - 2017-06-15-metaphysical-micro-services-modeling</title>
+        <script type="text/javascript" src="../js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML-full,Safe"></script>
+        <script type="text/javascript" src="https://unpkg.com/pdfjs-dist@2.0.489/build/pdf.min.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/pdfjs-dist@2.0.489/build/pdf.worker.min.js"></script>
+        <link rel="stylesheet" href="../css/default.css" />
+        <link rel="stylesheet" href="../css/github.css" />
+    </head>
+    <body>
+        <div id="header">
+            <div id="logo">
+                <a href="../">Ryan's Cave</a>
+            </div>
+            <div id="navigation">
+                <a href="../">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../contact.html">Contact</a>
+                <a href="../archive.html">Archive</a>
+            </div>
+        </div>
+
+        <div id="content">
+            <div class="info">
+    Posted on June 15, 2017
+    
+</div>
+
+<h1>
+<center>
+Metaphysical Micro-Services Modeling
+</center>
+</h1>
+<center>
+<strong>Ryan J. Kung</strong>
+</center>
+<center>
+<strong>ryankung(at)ieee.org</strong>
+</center>
+<h2 id="i-metaphysical-modeling">I Metaphysical Modeling</h2>
+<p>There are two ways in which the term modeling can be understood: <strong>descriptive</strong> and <strong>preciptive</strong>. A descriptive model represent an existing system Thus a presciptive model is one that can be used to construct the target system[1]. We wont try to model classic or pure micro-services archicture there, but we may needs to obey follow rules which discript well about micro-services</p>
+<ul>
+<li>Single-purpose</li>
+<li>Modular and independent</li>
+<li>Does not share a persistence layer</li>
+</ul>
+<h3 id="descriptive-with-functional">1.1 Descriptive with Functional</h3>
+<p>A Functional is a Function which accept a paramater <span class="math inline">\(\theta\)</span> and output a function <span class="math inline">\(f(x;\theta)\)</span>, where <span class="math inline">\(f(x)\)</span> is the abstract of <span class="math inline">\(services\ processing\)</span>.</p>
+<h4 id="pure-function-and-equivariant">1.1.1 <em>Pure Function</em> and <em>equivariant</em></h4>
+<p>Pure Function is that a function dose not cause any side-effect, which is means, no statements, IO, wont cause <em>MUTEX</em>, etc.</p>
+<p>And suppose that there is two function <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span>, <span class="math inline">\(f(x)\)</span> is equivariant to <span class="math inline">\(g\)</span> <span class="math inline">\(iff\)</span>: <span class="math inline">\(f\circ g(x)=g \circ f(x)\)</span>.</p>
+<h4 id="compose-function">1.1.2 Compose Function</h4>
+<p>In mathematic, compose of functions <span class="math inline">\(f(g(x)) = f \circ g (x)\)</span> can can be represent that <span class="math inline">\(compose ( f, g)(x)\)</span>, or in S-exp <span class="math inline">\((compose\ f'\ g')\)</span>, where <span class="math inline">\(\circ\)</span> is a <span class="math inline">\(left\ prefix\)</span> function.</p>
+<p>Functions can be composed with any order iff they are <span class="math inline">\(Pure\)</span> or <span class="math inline">\(Equivariant\)</span>, otherwise we may need to define some fixed oreder function with <span class="math inline">\(J=f\circ g\)</span>, which have some hidden functions like <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> in our descrpiptive scope.</p>
+<h4 id="side-effect">1.1.2 Side-Effect</h4>
+<p>Side-effect usually caused via <em>Resource Sharing</em>, <em>IO</em>, or <em>Statement</em>. If a function cause side-effect, it’s obviously not a <span class="math inline">\(pure\)</span> function, but it still can be describe as <span class="math inline">\(equivariant\)</span> function.</p>
+<p>A <span class="math inline">\(distribution\)</span> system can be describe as <em>a system which including unpredictable order in which certain events can occour</em>, So as the micro-service System. With the definition of the <span class="math inline">\(Lamport\ Timestamp\)</span>, we can define a compose of functions like: <span class="math inline">\(Ev_a \rightarrow [Ev_{b1}, Ev_{b2}] \rightarrow Ev_c \rightarrow Ev_d\)</span>. If all events are <span class="math inline">\(pure\)</span> or <span class="math inline">\(equivariant\)</span>, we can think <span class="math inline">\(Ev_{b1}\)</span> and <span class="math inline">\(Ev_{b2}\)</span> are occour concurrency.</p>
+<p>But if <span class="math inline">\(Ev_{b2}\)</span> couse side-effect, we must include the statement of <span class="math inline">\(Ev_{b2}\)</span> in our <span class="math inline">\(Lamprot\ Timeline\)</span>: <span class="math inline">\(Ev_a \rightarrow [Ev_{b1}, Ev_{b2}^1] \rightarrow [Ev_{b1}, Ev_{b2}^2]\rightarrow Ev_c \rightarrow Ev_d\)</span>. The processing of <span class="math inline">\([Ev_{b1}, Ev_{b2}^1] \rightarrow [Ev_{b1}, Ev_{b2}^2]\)</span> is a block or synchronization of side-effect.</p>
+<h3 id="preciptive-with-dsls">1.2 Preciptive with DSLs</h3>
+<p>When we said that a language <span class="math inline">\(l\)</span> covers a subset of <span class="math inline">\(P\)</span>, we can simply call this subset the domain covered with <span class="math inline">\(l\)</span>. The subset of <span class="math inline">\(P\)</span> in that domain <span class="math inline">\(P_D\)</span> is equal to the subset of <span class="math inline">\(P\)</span> we can express with a language <span class="math inline">\(l\)</span> <span class="math inline">\(P_l\)</span>. So, we cannot ask a question like: “Does the language adequately cover the domain?”, since it always does, by definition.[4] And the definition can be also interept as that “DSL is always model complete, by definition”.</p>
+<p>DSLs is actually a meta-ness of preciptive modeling, and according to the <em>Model Complete Theory</em>, DSLs is the shortcut of providing a better abstrict of target system. Or we can say that, all modeling methods will bring us a DSL which is model completion.</p>
+<h3 id="scale-underfitting-and-overfitting">1.2 Scale, Underfitting and Overfitting</h3>
+<p>We can optimize <span class="math inline">\(f(x;\theta)\)</span> by provide a better scale rate <span class="math inline">\(\theta\)</span>. So we may needs to define a <span class="math inline">\(Cost\ function\)</span> to define how good a choice of <span class="math inline">\(\theta\)</span> is, this <span class="math inline">\(cost\ function\)</span> is always calls banchmark in architecture modeling.</p>
+<p>For avoid underfitting and overfitting, we usually setup some monitor services for getting the approximate value of <span class="math inline">\(\theta\)</span>.</p>
+<h2 id="ii-concrete">II Concrete</h2>
+<p>Thus we have passed the age of exploration of the distribution system or archicture. There is alot of components for building a concrete distribute micro-services system.</p>
+<h3 id="describe-the-services">2.1 Describe the Services</h3>
+<p>In a distribute system envirement, we can build out system on a implemented distribute system, such as <code>etcd</code>, or <code>consul</code> Which provide an opensource implementation of <code>raft</code> algorthm that equivariant to Lamport’s PAXOS.</p>
+<p>The best way for descriptive modeling should be DSLs, thus it’s hard to implementation. In a compromise way, we can use <code>RPC</code> to provide a better description of services itself. <code>GRPC</code> might be a good choice, during to the strict type system and <code>Http 2.0</code> supporting.</p>
+<p>A services should tell others <em>Who</em> it is, and <em>What</em> or <em>How</em> it should be. For the formalize denote of <span class="math inline">\(y=f(x;\theta)\)</span>, <span class="math inline">\(f\)</span> should be the <code>id</code> or <code>name</code> of the services, and <span class="math inline">\(x\rightarrow y\)</span> is the input/output protocol of services. For more, It should also provide <span class="math inline">\(\theta\)</span> to other services which is usuallys stands for <span class="math inline">\(scale\ rate\)</span>. So it’s necessary to <strong>register</strong> the meta information as <code>K/V</code> with our distribute system for <strong>exploring</strong> by other services. And use services like <code>confd</code> to moniting and applying the <code>KV</code> changes.</p>
+<p>For static config of services(even for clients), we can simple build a static config system. For example, <code>PSS</code> is a simple Kstorage system base on <code>pandas</code> which provide map, reduce, filter function for reshape/recache the static config files.</p>
+<h3 id="regulator-of-theta">2.2 Regulator of <span class="math inline">\(\theta\)</span></h3>
+<p>For getting a better <span class="math inline">\(\theta\)</span>, We may need some monitor services such as <code>grafana / Prometheus / Sentry</code> for function of cost. Then we may try to predict <span class="math inline">\(\theta\)</span> based on the banchmark and result of montoring.</p>
+<h3 id="side-effect-1">2.3 Side-effect</h3>
+<p>It’s really complex for managing statements and side-effect, visiting a resoure by multiple services in same time may occor unpredictable result or <span class="math inline">\(mutex\rightarrow deadlock\)</span>. To avoid it, we may needs to discript the side-effect more strictly. Some GPL such like <code>Haskell</code> provide a abstruct data structure for manage it called <code>monad</code>, thus there is <code>IO monad</code>, <code>State Monad</code>, <code>Pal Monad</code>, <code>Eval Monad</code>. Word <code>monad</code> actually means that a operators that don’t have <code>inverse element</code>.</p>
+<p><code>Qubit</code>[4] is thus a system for manage side-effect data. The basic idea of Qubit is from <code>FRP</code> and <code>Eval Monad</code>. Qubit is a multi-process services which is also distribute but has no effect. A <code>Qubit</code> Works as a <code>Immutable Type Class</code> which is just provide some eval monad for schedular and calling. The Qubit descriped with following rules.</p>
+<ul>
+<li>Eval Monad</li>
+<li>Safe DSL :: Require(‘xxx.py’)</li>
+<li>Data -&gt; [prevData, NextData]</li>
+<li>Save <span class="math inline">\(iff\)</span> side effect</li>
+<li>Timestamp and Lamport-Timestamp <span class="math inline">\(Ev_1 \rightarrow [Ev_2, Ev_3] \rightarrow Ev_n\)</span></li>
+</ul>
+<h3 id="toolkits">2.4 Toolkits</h3>
+<p>For depoly and testing the distribute system, we may need alot of tookits. Such as <code>git-daemon</code> or <code>fabric</code>. <code>Stack</code> is another choice for making building system easilyer which provide a remote shell based on websockets, and support fabric’s systax which is actually a DSL</p>
+<h1 id="iii-reference">III Reference</h1>
+<p>[1][4] DSL Engineering, Designing, Implementing and Using Domain-Specific Languages, Markus Voelter, dslbook.org, ch 2.1</p>
+<p>[2]Time, Clock, And the Ordering of Events in a distribute system, Leslie Lamport, MCA Inc.</p>
+<p>[3] Why DSL Ryan J. Kung, https://ryankung.github.io/posts/2017-06-14-why-dsl.html</p>
+<p>[4] Qubit, A Eval based Time Series Event System. https://github.com/RyanKung/qubitcal Micro-Services Modeling</p>
+
+        </div>
+
+        <div id="footer">
+            Site proudly generated by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Ryan's Cave - 2017-07-10-note-of-unpuervised-learning-k-means-and-pca</title>
+        <script type="text/javascript" src="../js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML-full,Safe"></script>
+        <script type="text/javascript" src="https://unpkg.com/pdfjs-dist@2.0.489/build/pdf.min.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/pdfjs-dist@2.0.489/build/pdf.worker.min.js"></script>
+        <link rel="stylesheet" href="../css/default.css" />
+        <link rel="stylesheet" href="../css/github.css" />
+    </head>
+    <body>
+        <div id="header">
+            <div id="logo">
+                <a href="../">Ryan's Cave</a>
+            </div>
+            <div id="navigation">
+                <a href="../">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../contact.html">Contact</a>
+                <a href="../archive.html">Archive</a>
+            </div>
+        </div>
+
+        <div id="content">
+            <div class="info">
+    Posted on July 10, 2017
+    
+</div>
+
+<h1>
+<center>
+Note of Unsupervised Learning: K-Means and PCA
+</center>
+</h1>
+<center>
+<strong>Ryan J. Kung</strong>
+</center>
+<center>
+<strong>ryankung(at)ieee.org</strong>
+</center>
+<h2 id="i-k-means">I K-means</h2>
+<h3 id="optimization-object">1.1 optimization object</h3>
+<p><span class="math inline">\(c^{(i)}=\)</span>index of cluster <span class="math inline">\(i\ |\ i\in[1,k],i\in\mathbb{R}\)</span>, to which examle <span class="math inline">\(x^{(i)}\)</span> is currently assigned</p>
+<p><span class="math inline">\(\mu_k\)</span>= cluster centroid <span class="math inline">\(k\ (\mu_k\in\mathbb{R}^n)\)</span></p>
+<p><span class="math inline">\(\mu_{c^{(i)}}\)</span> = cluster centroid of cluster to which example <span class="math inline">\(x^{(i)}\)</span> has been assigned.</p>
+<p>Optimization Objetive (distorting function):</p>
+<span class="math display">\[\begin{align*}
+J(c^{i},...,c^{(m)}, \mu_1,...,\mu_k)=\frac{1}{m}\sum_{i=1}^m||x^{(i)}-\mu_{c^{(i)}}||^2
+\end{align*}\]</span>
+<p>Goal:</p>
+<span class="math display">\[\begin{align*}
+\underset{(c^{i},...,c^{(m)},\\ \mu_1,...,\mu_k)}{min}J(c^{i},...,c^{(m)}, \mu_1,...,\mu_k)=\frac{1}{m}\sum_{i=1}^m||x^{(i)}-\mu_{c^{(i)}}||^2
+\end{align*}\]</span>
+<p>K-means algorithm:</p>
+<p>Randomly initalize <span class="math inline">\(K\)</span> cluster centroids <span class="math inline">\(\mu_!, \mu_2, ..,\mu_k \in \mathbb{R}^n\)</span>.</p>
+<p>Repeat {</p>
+<p>……for i=1 to m (<strong>cluster assignment step</strong>)</p>
+<p>………<span class="math inline">\(c^{(i)}\)</span>:=index {from 1 to <span class="math inline">\(K\)</span>) of cluster cntroid closest to <span class="math inline">\(x^{(i)}\)</span></p>
+<p>……for <span class="math inline">\(k=1\)</span> to <span class="math inline">\(K\)</span> (<strong>move centroid step</strong>)</p>
+<p>………<span class="math inline">\(\mu_k\)</span>:=mean of points assigned to cluster <span class="math inline">\(k\)</span></p>
+<p>}</p>
+The <strong>cluster assignment step</strong> is actually does:
+<span class="math display">\[\begin{align*}
+\underset{(c^{i},...,c^{(m)},\\ with\ holding\ \mu_1,...,\mu_k)}{min}J(...)\ wat\ c^{(i)}\ |\ i\in[1,k]
+\end{align*}\]</span>
+<p>The <strong>move centroid step</strong> is actuall does:</p>
+<span class="math display">\[\begin{align*}
+\underset{( with\ holding\ c^{i},...,c^{(m)},\\\mu_1,...,\mu_k)}{min}J(...) wat\ \mu_i \ | \ i \in [1, k]
+\end{align*}\]</span>
+<h3 id="random-initazation">1.2 Random initazation</h3>
+<p>Randomly inialize <span class="math inline">\(K\)</span> cluster centroids <span class="math inline">\(\mu_i\ |\ i\in[1,K];\mu_K\in \mathbb{R}^n\)</span></p>
+<ol start="0" style="list-style-type: decimal">
+<li><p>Should have <span class="math inline">\(K&lt;m\)</span></p></li>
+<li><p>Randomly pick <span class="math inline">\(K\)</span> traing examples</p></li>
+<li><p>set <span class="math inline">\(\mu_1,...,\mu_K\)</span> equal to these <span class="math inline">\(K\)</span> examples.</p></li>
+</ol>
+<p>For solving <strong>Local otima Problem</strong>, you may needs to try multi-time <strong>random initazation</strong>.</p>
+<ul>
+<li>Concretely:</li>
+</ul>
+<p>For i=1 to 100 {</p>
+<p>……Randomly initialize K-means.</p>
+<p>……Run K-means; Get <span class="math inline">\(c^{(i)},\mu_j\ |\ i\in[1,m]; j\in[1,K];(i,k)\in(\mathbb{R},\mathbb{R})\)</span></p>
+<p>……Compute cost function (distortion) <span class="math inline">\(J(c^{i},...,c^{(m)}, \mu_1,...,\mu_k)\)</span></p>
+<p>}</p>
+<p>Pick clustering that gave lowest cost <span class="math inline">\(J(.)\)</span></p>
+<p>if <span class="math inline">\(K\in [2, 10]\)</span>, by doing multiple random inializations can ofen provide a better local optima.</p>
+<p>But if <span class="math inline">\(K\)</span> is very large, <span class="math inline">\(K\geq10\)</span>, then havling multiple random initializations is less likely to make a huge difference and higher change taht your fist random initialization will gave you a pretty decent solution already.</p>
+<h4 id="chooing-the-value-of-k-the-elbow-method">1.2.1 Chooing the value of K: The Elbow method</h4>
+Elbow method:
+<span class="math display">\[\begin{align*}
+\underset{J(c^{i},...,c^{(m)}, \mu_1,...,\mu_k;K)}{Elbow}
+\end{align*}\]</span>
+<p>The known issue is, the Elbow method may not provide a clear answer, but it’s worth for trying. Another way to Evaluate K-means is base on a metric for how well it performs for that later purpose.</p>
+<h2 id="ii-dimensionality-reduction">II Dimensionality Reduction</h2>
+<ul>
+<li><p>Motivation I: Data Compression:</p></li>
+<li><p>Motivation II: Visualization</p></li>
+</ul>
+<h3 id="principal-component-analysis-pca">2.1 Principal Component Analysis (PCA)</h3>
+<p>The goal of PCA is tried to Reduce from n-dimension to k-dimension: Find <span class="math inline">\(k\)</span> vector <span class="math inline">\(u^{(i)}\in\mathbb{R}^n;i\in[1,k]\)</span>, that the sum of squares of <span class="math inline">\(x^{(i)}\)</span> is minimized which is sometimes also called the <strong>projection error</strong>.</p>
+<h4 id="data-processing">2.1.1 Data processing:</h4>
+<p>Training set: <span class="math inline">\(x^i\ |\ i\in[1,m]; i\in\mathbb{R}\)</span></p>
+Processing (feature scaling/mean normalization):
+<span class="math display">\[\begin{align*}
+\mu_j=\frac{1}{m}\sum_{i=1}^mx_{j}^{(i)}
+\end{align*}\]</span>
+<p>Replace each <span class="math inline">\(x_j^{(i)}\)</span> with <span class="math inline">\(x_j-\mu_j\)</span></p>
+<p>if different features on fifferent scales, scale features to have comparable range of values.</p>
+<span class="math display">\[\begin{align*}
+x_j^{(i)}=\frac{x_j^{(i)}-\mu_j}{s_j}
+\end{align*}\]</span>
+<h4 id="pca">2.1.2 PCA</h4>
+<p>Goal: Reduce data from <span class="math inline">\(n\)</span>-dimensions to <span class="math inline">\(k\)</span>-dimensions:</p>
+<p>Compute <code>Covariance Matrix</code> (which is always satisfied <em>symmetic positive definied</em>):</p>
+<span class="math display">\[\begin{align*}
+\Sigma=\frac{1}{m}\sum_{i=1}^n(x^{(i)})(x^{(i)})^T
+\end{align*}\]</span>
+<p>Compute <code>eigenvectors</code> of meatrix <span class="math inline">\(\Sigma\)</span>:</p>
+<span class="math display">\[\begin{align*}
+[U, S, V] = svd(\Sigma)\ |\ \Sigma\in\mathbb{R}^{nxn}
+\end{align*}\]</span>
+<p>svd: <strong>Sigular value decomposition</strong></p>
+<span class="math display">\[\begin{align*}
+U=\left[
+\begin{matrix}
+\vdots&amp;\vdots&amp;\cdots&amp;\vdots&amp;\cdots&amp;\vdots\\
+u^{(1)}&amp;u^{(2)}&amp;\cdots&amp;u^{(k)}&amp;\cdots&amp;u^{(n)}&amp;\\
+\vdots&amp;\vdots&amp;\cdots&amp;\vdots&amp;\cdots&amp;\vdots\\
+\end{matrix}
+\right]
+\in\mathbb{R}^{nxn}
+\end{align*}\]</span>
+<span class="math display">\[\begin{align*}
+U_{reduce}=\left[
+\begin{matrix}
+\vdots&amp;\vdots&amp;\cdots&amp;\vdots\\
+u^{(1)}&amp;u^{(2)}&amp;\cdots&amp;u^{(k)}\\
+\vdots&amp;\vdots&amp;\cdots&amp;\vdots\\
+\end{matrix}
+\right]
+\in\mathbb{R}^{nxk}
+\end{align*}\]</span>
+<p>Thus:</p>
+<span class="math display">\[\begin{align*}
+z={U_{reduce}}^T x\ |\ x\in\mathbb{R}^{nx1};Z\in\mathbb{R}^{kx1}\\
+\end{align*}\]</span>
+<p>So mapping With PCA:</p>
+<span class="math display">\[\begin{align*}
+z^{(i)}=U_{reduce}^Tx^{i}=({u_{reduce}}^{(i)})^Tx
+\end{align*}\]</span>
+<p>With <code>mathlab</code>:</p>
+<pre class="mathlab"><code>Sigma = (1/m)*X'*X;
+[U, S, V] = svd(Sigma);
+Ureduce = U(:, 1: k);
+z = Ureduce'*x'</code></pre>
+<h4 id="chooing-the-value-of-k-number-of-principle-components">2.2.3 Chooing the value of K (Number of Principle Components)</h4>
+<ul>
+<li>Minilize Averge squared project error:</li>
+</ul>
+<span class="math display">\[\begin{align*}
+\frac{1}{m}\sum_{i=1}^m||x^{(i)}-x_{approx}^{(i)}||^2
+\end{align*}\]</span>
+<ul>
+<li>Total variation in the data:
+<span class="math display">\[\begin{align*}
+\frac{1}{m}\sum_{i=1}^m||x^{(i)}||^2
+\end{align*}\]</span></li>
+<li>Typically, choose <span class="math inline">\(k\)</span> to be smallest value so that:
+<span class="math display">\[\begin{align*}
+\frac{\frac{1}{m}\sum_{i=1}^m||x^{(i)}-x_{approx}^{(i)}||^2
+}{\frac{1}{m}\sum_{i=1}^m||x^{(i)}||^2}\leq0.01
+\end{align*}\]</span></li>
+</ul>
+<p>Thus we can say “99% of variance is retained”</p>
+<h4 id="algorithm">Algorithm:</h4>
+<p>Try PCA with <span class="math inline">\(k=n\)</span></p>
+Compute:
+<span class="math display">\[\begin{align*}
+U_{reduce},Z^{(i)},x_{approx}^{(i)}\ |\ i\in[1,m]
+\end{align*}\]</span>
+<p>Check if:</p>
+<span class="math display">\[\begin{align*}
+\frac{\frac{1}{m}\sum_{i=1}^m||x^{(i)}-x_{approx}^{(i)}||^2
+}{\frac{1}{m}\sum_{i=1}^m||x^{(i)}||^2}\leq0.01
+\end{align*}\]</span>
+<p><strong>For Optimization</strong>:</p>
+<span class="math display">\[\begin{gather}
+[U, S, V] = svd(\Sigma)
+\end{gather}\]</span>
+<p>Thus:</p>
+<span class="math display">\[\begin{gather}
+S=\begin{bmatrix}
+s_{11}\\
+&amp;s_{22}&amp; &amp; {\huge{0}}\\
+&amp;&amp;s_{33}\\
+&amp; {\huge{0}} &amp;&amp; \ddots\\
+&amp;&amp;&amp;&amp; s_{nn}
+\end{bmatrix}
+\in\mathbb{R}^{nxk}\end{gather}\]</span>
+<p>For given <span class="math inline">\(K\)</span>:</p>
+<span class="math display">\[\begin{align*}
+\frac{\frac{1}{m}\sum_{i=1}^m||x^{(i)}-x_{approx}^{(i)}||^2
+}{\frac{1}{m}\sum_{i=1}^m||x^{(i)}||^2}\leq0.01
+\end{align*}\]</span>
+<p>Can be compute by:</p>
+<span class="math display">\[\begin{align*}
+1-\frac{\sum_{i=1}^kS_{ii}}{\sum_{i=1}^nS_{ii}}\leq0.01
+\end{align*}\]</span>
+<h3 id="reconstruction-from-compressed-representation">2.2 Reconstruction from Compressed Representation</h3>
+<span class="math display">\[\begin{align*}
+z={U_{reduce}}^T \\
+X_{approx}=U_{reduce}. z
+\end{align*}\]</span>
+<h3 id="application">2.3 Application:</h3>
+<ul>
+<li>Compression:
+<ul>
+<li>Supervised learning speedup</li>
+<li>Reduce memory / disk needs to store data</li>
+</ul></li>
+<li>Visulization</li>
+</ul>
+<h4 id="bad-use-of-pca-to-prevent-overfitting">2.3.1 Bad use of PCA: To prevent overfitting:</h4>
+<p>Use <span class="math inline">\(z^{(i)}\)</span> instead of <span class="math inline">\(x^{(i)}\)</span> to reduce the number of features to <span class="math inline">\(k&lt;n\)</span>,</p>
+<p>Thus, fewer features, less likely to overfit.</p>
+<p>It might work OK, but <strong>isn’t a good way</strong> to <strong>address</strong> overfitting. The fact of PCA does here, is throwed away some information.</p>
+<h2 id="iii-reference">III Reference</h2>
+<p>[1] Machine Learning, Andrew Ng, https://www.coursera.org/learn/machine-learning</p>
+
+        </div>
+
+        <div id="footer">
+            Site proudly generated by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        </div>
+    </body>
+</html>
