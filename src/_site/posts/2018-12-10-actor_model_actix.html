@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Ryan's Cave - 2018-12-10-actor_model_actix</title>
+        <script type="text/javascript" src="../js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML-full,Safe"></script>
+        <script type="text/javascript" src="https://unpkg.com/pdfjs-dist@2.0.489/build/pdf.min.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/pdfjs-dist@2.0.489/build/pdf.worker.min.js"></script>
+        <link rel="stylesheet" href="../css/default.css" />
+        <link rel="stylesheet" href="../css/github.css" />
+    </head>
+    <body>
+        <div id="header">
+            <div id="logo">
+                <a href="../">Ryan's Cave</a>
+            </div>
+            <div id="navigation">
+                <a href="../">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../contact.html">Contact</a>
+                <a href="../archive.html">Archive</a>
+            </div>
+        </div>
+
+        <div id="content">
+            <div class="info">
+    Posted on December 10, 2018
+    
+</div>
+
+#
+<center>
+Actor Model :: Actix
+</center>
+<center>
+Ryan Kung
+</center>
+<center>
+ryankung#ieee.org
+</center>
+<p>Actix is a Actor Model implementation which was first presented by [Carl Hewitt, …] at 1973 as <code>A Universal Modular ACTOR Formalism for Artificial Intelligence</code> for <code>PLANNER</code> Project. Actor model can be defined in terms of one kind of behavior:</p>
+<p>“sending messages to actors. An actor is always invoked uniformly in exactly the same way regardless of whether it behaves as a recursive function, data structure, or process.”[1]</p>
+<p>Which is means that an Actor is a computational entity that, in response to a message it receives, can concurrently[4]:</p>
+<ul>
+<li>Send a finite number of messages to other Actors;</li>
+<li>Create a finite number of new Actors;</li>
+<li>Designate the behavior to be used for the next message it receives.</li>
+</ul>
+<p>For Send and Handle message, Actors have a abstract structure named Mailbox, which is the place where received messages are stored. Although multiple actors can run at the same time, an actor will process a given message sequentially, this means that if you send 3 messages to the same actor, it will just execute one at a time. To have these 3 messages being executed concurrently, you need to create 3 actors and send one message to each. Those messages are stored in other actors’ mailboxes until they’re processed.[5]</p>
+<h2 id="actix">Actix</h2>
+<p><code>Actix-rs</code> is an actor model implementaion in Rust programming language.</p>
+<h3 id="actixactor">actix::Actor</h3>
+<p>Actors are objects which encapsulate state and behavior.</p>
+<p>Actors run within specific execution context <code>Context</code>. Context object is available only during execution. Each actor has separate execution context. Also execution context controls lifecycle of an actor: (<code>Started</code>, <code>Running</code>, <code>Stoping</code>, <code>Stopped</code>).</p>
+<h4 id="started">Started</h4>
+<p>Actor starts in Started state, during this state started method get called.</p>
+<h4 id="running">Running</h4>
+<p>After Actor’s method started get called, actor transitions to Running state. Actor can stay in running state indefinitely long.</p>
+<h4 id="stopping">Stopping:</h4>
+<p>Actor execution state changes to stopping state in following situations:</p>
+<ol style="list-style-type: decimal">
+<li>Context::stop get called by actor itself.</li>
+<li>All addresses to the actor get dropped</li>
+<li>no evented objects are registered in context.</li>
+</ol>
+<p>Actor could restore from <code>stopping</code> state to running state by creating new address or adding evented object, like future or stream, in <code>Actor::stopping</code> method.</p>
+<h4 id="stopped">Stopped</h4>
+<p>If actor does not modify execution context during stopping state actor state changes to Stopped. This state is considered final and at this point actor get dropped.</p>
+<h3 id="actixarbiter">actix::arbiter</h3>
+<p>Arbiter is an event loop controller, Arbiter controls event loop in its thread. Each arbiter runs in separate thread. Arbiter provides several api for event loop access. Each arbiter can belongs to specific <code>System</code> actor. By default, a panic in an Arbiter does not stop the rest of the System, unless the panic is in the System actor.</p>
+<h3 id="actixsyncayncarbiter">actix::sync::AyncArbiter</h3>
+<p>Sync actors could be used for cpu bound load. Only one sync actor runs within arbiter’s thread.</p>
+<p>Sync actor process one message at a time.</p>
+<p>Sync arbiter can start multiple threads with separate instance of actor in each. Note on actor stopping lifecycle event, sync actor can not prevent stopping by returning false from stopping method.</p>
+<p>Multi consumer queue is used as a communication channel queue. To be able to start sync actor via SyncArbiter Actor has to use SyncContext as an execution context.</p>
+<h3 id="actixsupervised">actix::Supervised</h3>
+<p>Actors with ability to restart after failure, Supervised actors can be managed by Supervisor. Lifecycle events are extended with restarting method. If actor fails, supervisor creates new execution context and restarts actor. restarting method is called during restart.</p>
+<h3 id="ref">Ref:</h3>
+<blockquote>
+<ol style="list-style-type: decimal">
+<li>Carl Hewitt, …, A Universal Modular ACTOR Formalism for Artificial Intelligence.</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="2" style="list-style-type: decimal">
+<li>J.C.M. Baeten, A brief history of process algebra</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="3" style="list-style-type: decimal">
+<li>Colin Fidg, Software Veriﬁcation Research Centre Department of Computer Science The University of Queensland Queensland 4072, Australia, A Comparative Introduction to CSP, CCS and LOTOS, 1994</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="4" style="list-style-type: decimal">
+<li>Carl Hewitt, Actor Model of Computation</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="5" style="list-style-type: decimal">
+<li>The Actor Model, https://www.brianstorti.com/the-actor-model/</li>
+<li>Actix API Document https://actix.rs/actix/actix/trait.Actor.html</li>
+</ol>
+</blockquote>
+
+        </div>
+
+        <div id="footer">
+            Site proudly generated by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        </div>
+    </body>
+</html>
